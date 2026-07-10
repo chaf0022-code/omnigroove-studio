@@ -13,7 +13,7 @@
             -webkit-touch-callout: none;
         }
         
-        body, html {
+        html, body {
             margin: 0;
             padding: 0;
             width: 100%;
@@ -22,230 +22,345 @@
             background: #000;
         }
 
-        .mpc-body {
-            background-color: #c9c9a8;
-            background-image: linear-gradient(45deg, rgba(0,0,0,0.05) 25%, transparent 25%, transparent 75%, rgba(0,0,0,0.05) 75%, rgba(0,0,0,0.05)), linear-gradient(45deg, rgba(0,0,0,0.05) 25%, transparent 25%, transparent 75%, rgba(0,0,0,0.05) 75%, rgba(0,0,0,0.05));
-            background-size: 20px 20px;
-            background-position: 0 0, 10px 10px;
-            border: 8px solid #1a1a1a;
-            height: 100vh;
+        .mpc-container {
             width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(135deg, #d4c5a0 0%, #c9bfa0 50%, #bfb595 100%);
+            border: 12px solid #1a1a1a;
+            border-radius: 16px;
+            box-sizing: border-box;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.3);
+        }
+
+        .top-panel {
+            display: flex;
+            gap: 12px;
+            padding: 12px;
+            flex-shrink: 0;
+        }
+
+        /* LCD SCREEN */
+        .lcd-panel {
+            flex: 1;
+            background: linear-gradient(180deg, #0a0a0a 0%, #1a1a1a 100%);
+            border: 6px solid #2a2a2a;
+            border-radius: 12px;
+            box-shadow: inset 0 4px 12px rgba(0,0,0,0.9), 0 0 20px rgba(0,0,0,0.5);
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            box-sizing: border-box;
-        }
-
-        .lcd-screen {
-            background: linear-gradient(180deg, #1a1f2e 0%, #0d1117 100%);
-            border: 4px solid #333;
-            border-radius: 8px;
-            box-shadow: 0 0 12px rgba(0, 0, 0, 0.9), inset 0 2px 8px rgba(0, 0, 0, 0.8);
-            padding: 0;
-            overflow: hidden;
-            flex-shrink: 0;
-            margin: 8px;
         }
 
         .lcd-header {
-            background: linear-gradient(90deg, #ff6600, #ff8833);
+            background: linear-gradient(90deg, #ff6600 0%, #ffaa33 100%);
             color: #000;
-            padding: 6px 12px;
-            font-size: 13px;
+            padding: 8px 14px;
+            font-size: 14px;
             font-weight: bold;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
             text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
 
         .lcd-content {
-            background: linear-gradient(180deg, #1a1f2e 0%, #0d1117 100%);
+            flex: 1;
+            background: linear-gradient(180deg, #0f0f0f 0%, #050505 100%);
             padding: 12px;
-            color: #0f0;
-            font-family: 'Courier New', monospace;
-            font-size: 15px;
-            font-weight: bold;
-            line-height: 1.6;
-            text-shadow: 0 0 4px #0f0;
-            min-height: 70px;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: space-between;
         }
 
-        .control-strip {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-            flex-wrap: wrap;
-            padding: 8px;
-            flex-shrink: 0;
-            background: rgba(0, 0, 0, 0.2);
-        }
-
-        .control-btn {
-            background: linear-gradient(135deg, #5a5a5a 0%, #3a3a3a 100%);
-            border: 2px solid #1a1a1a;
+        .lcd-waveform {
+            flex: 1;
+            background: linear-gradient(180deg, #111 0%, #000 100%);
+            border: 2px solid #333;
             border-radius: 4px;
-            padding: 8px 12px;
-            color: #fff;
-            font-size: 10px;
-            font-weight: bold;
-            letter-spacing: 0.5px;
-            cursor: pointer;
-            box-shadow: 0 3px 0 #0a0a0a, inset 0 1px 2px rgba(255,255,255,0.15);
-            transition: all 0.05s ease;
-            flex-shrink: 0;
-        }
-
-        .control-btn:active {
-            transform: translateY(3px);
-            box-shadow: 0 0 0 #000, 0 0 12px #ff6600;
-        }
-
-        .control-btn.primary {
-            background: linear-gradient(135deg, #ff8833, #ff6600);
-            color: #000;
-            font-weight: bold;
-            box-shadow: 0 3px 0 #cc4400, inset 0 1px 2px rgba(255,255,255,0.2);
-        }
-
-        .control-btn.primary:active {
-            box-shadow: 0 0 0 #000, 0 0 20px #ffaa44;
-        }
-
-        .qlink-container {
             display: flex;
-            gap: 6px;
-            flex-shrink: 0;
-        }
-
-        .qlink-knob {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: radial-gradient(circle at 50% 35%, #666 0%, #222 70%);
-            border: 2px solid #0a0a0a;
-            box-shadow: 0 3px 5px rgba(0,0,0,0.6), inset 0 1px 2px rgba(255,255,255,0.2);
+            align-items: center;
+            justify-content: center;
             position: relative;
+            overflow: hidden;
+        }
+
+        .waveform-canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        .lcd-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            color: #0f0;
+            text-shadow: 0 0 4px #0f0;
+        }
+
+        /* SIDE KNOBS PANEL */
+        .knobs-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
             flex-shrink: 0;
         }
 
-        .qlink-knob::before {
+        .knob-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .knob {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 35%, #777 0%, #333 50%, #111 100%);
+            border: 3px solid #0a0a0a;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.7), inset -2px -2px 4px rgba(0,0,0,0.8), inset 2px 2px 4px rgba(255,255,255,0.1);
+            position: relative;
+        }
+
+        .knob::before {
             content: "";
             position: absolute;
-            top: 3px;
+            top: 4px;
             left: 50%;
-            width: 2px;
-            height: 6px;
+            width: 3px;
+            height: 10px;
             background: #ff6600;
             transform: translateX(-50%);
             border-radius: 2px;
         }
 
-        .pad-grid {
+        .knob-label {
+            font-size: 9px;
+            font-weight: bold;
+            color: #000;
+            text-align: center;
+            width: 50px;
+        }
+
+        /* MAIN CONTENT */
+        .main-section {
             flex: 1;
+            display: flex;
+            gap: 12px;
+            padding: 12px;
+            overflow: hidden;
+        }
+
+        /* LEFT CONTROL BUTTONS */
+        .left-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            flex-shrink: 0;
+            width: 60px;
+        }
+
+        .ctrl-btn {
+            flex: 1;
+            border: 2px solid #1a1a1a;
+            border-radius: 4px;
+            font-size: 8px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            box-shadow: 0 3px 0 #0a0a0a, inset 0 1px 2px rgba(255,255,255,0.2);
+            transition: all 0.05s ease;
+            color: #000;
+        }
+
+        .ctrl-btn:active {
+            transform: translateY(3px);
+            box-shadow: 0 0 0, inset 0 1px 2px rgba(255,255,255,0.1);
+        }
+
+        .ctrl-btn.yellow {
+            background: linear-gradient(135deg, #ffdd44 0%, #ffcc00 100%);
+        }
+
+        .ctrl-btn.red {
+            background: linear-gradient(135deg, #ff5544 0%, #dd3322 100%);
+        }
+
+        .ctrl-btn.orange {
+            background: linear-gradient(135deg, #ff8833 0%, #ff6600 100%);
+        }
+
+        .ctrl-btn.gray {
+            background: linear-gradient(135deg, #888 0%, #666 100%);
+        }
+
+        /* PAD GRID */
+        .pad-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .pad-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            padding: 10px;
+            gap: 12px;
+            flex: 1;
             overflow: hidden;
         }
 
         .mpc-pad {
             aspect-ratio: 1 / 1;
-            min-height: 50px;
-            background: linear-gradient(135deg, #555 0%, #222 100%);
-            border: 3px solid #0f1114;
-            border-radius: 6px;
-            box-shadow: 0 5px 0 #0a0b0d, inset 0 2px 3px rgba(255,255,255,0.15);
+            background: linear-gradient(135deg, #6a6a6a 0%, #3a3a3a 100%);
+            border: 4px solid #1a1a1a;
+            border-radius: 8px;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.7), inset 0 2px 4px rgba(255,255,255,0.2), inset 0 -2px 4px rgba(0,0,0,0.5);
             cursor: pointer;
             display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: flex-start;
-            padding: 6px;
-            font-size: 10px;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
             font-weight: bold;
-            color: #aaa;
+            color: #ddd;
             transition: all 0.05s ease;
             position: relative;
             overflow: hidden;
             touch-action: none;
         }
 
-        .mpc-pad::after {
+        .mpc-pad::before {
             content: "";
             position: absolute;
             inset: 3px;
-            border-radius: 4px;
-            box-shadow: inset 0 0 6px rgba(255,102,0,0.1);
+            border-radius: 6px;
+            box-shadow: inset 0 -2px 4px rgba(0,0,0,0.5);
             pointer-events: none;
         }
 
         .mpc-pad.active {
-            background: #ff6600 !important;
+            background: linear-gradient(135deg, #ff8833 0%, #ff6600 100%) !important;
             color: #fff;
-            transform: translateY(5px);
-            box-shadow: 0 0 0 #000, 0 0 20px #ff6600;
+            transform: translateY(6px);
+            box-shadow: 0 0 0, 0 0 25px #ff6600, inset 0 2px 4px rgba(255,255,255,0.3);
         }
 
         .pad-label {
             position: relative;
             z-index: 1;
-            font-size: 9px;
-            color: inherit;
-            align-self: flex-end;
-        }
-
-        .export-btn {
-            background: linear-gradient(135deg, #4a7c3c 0%, #2a5c1c 100%);
-            color: #fff;
+            font-size: 11px;
             font-weight: bold;
-            box-shadow: 0 3px 0 #1a3c0c, inset 0 1px 2px rgba(255,255,255,0.15);
         }
 
-        .export-btn:active {
-            box-shadow: 0 0 0 #000, 0 0 15px #66dd00;
+        /* CONTROL STRIP */
+        .control-strip {
+            display: flex;
+            gap: 8px;
+            padding: 10px 12px;
+            flex-shrink: 0;
+            background: rgba(0,0,0,0.1);
+            border-top: 2px solid rgba(0,0,0,0.2);
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .strip-btn {
+            background: linear-gradient(135deg, #5a5a5a 0%, #3a3a3a 100%);
+            border: 2px solid #1a1a1a;
+            border-radius: 4px;
+            padding: 6px 10px;
+            color: #fff;
+            font-size: 10px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            box-shadow: 0 2px 0 #0a0a0a, inset 0 1px 2px rgba(255,255,255,0.1);
+            transition: all 0.05s ease;
+        }
+
+        .strip-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 0 0, 0 0 12px #ff6600;
+        }
+
+        .strip-btn.primary {
+            background: linear-gradient(135deg, #ff8833 0%, #ff6600 100%);
+            color: #000;
+            font-weight: bold;
+        }
+
+        .strip-btn.export {
+            background: linear-gradient(135deg, #44aa44 0%, #229922 100%);
         }
     </style>
 </head>
 <body>
-    <div class="mpc-body">
-        <!-- LCD SCREEN -->
-        <div class="lcd-screen" style="height: 28%;">
-            <div class="lcd-header">AKAI MPC ONE</div>
-            <div class="lcd-content">
-                <div id="sampleDisplay" style="font-size: 13px;">NO SAMPLE LOADED</div>
-                <div id="sliceDisplay" style="font-size: 11px; color: #0f0; margin-top: 4px;"></div>
+    <div class="mpc-container">
+        <!-- TOP PANEL: LCD + KNOBS -->
+        <div class="top-panel">
+            <!-- LCD SCREEN -->
+            <div class="lcd-panel">
+                <div class="lcd-header">AKAI MPC ONE</div>
+                <div class="lcd-content">
+                    <div class="lcd-waveform">
+                        <canvas id="waveformCanvas" class="waveform-canvas"></canvas>
+                    </div>
+                    <div class="lcd-info">
+                        <span id="sampleName">NO SAMPLE</span>
+                        <span id="sampleInfo">0:00</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT KNOBS -->
+            <div class="knobs-panel">
+                <div class="knob-group">
+                    <div class="knob"></div>
+                    <span class="knob-label">LEVEL</span>
+                </div>
+                <div class="knob-group">
+                    <div class="knob"></div>
+                    <span class="knob-label">PAN</span>
+                </div>
+                <div class="knob-group">
+                    <div class="knob"></div>
+                    <span class="knob-label">FILTER</span>
+                </div>
+                <div class="knob-group">
+                    <div class="knob"></div>
+                    <span class="knob-label">FX</span>
+                </div>
             </div>
         </div>
 
-        <!-- CONTROL STRIP -->
+        <!-- MAIN SECTION: CONTROLS + PADS -->
+        <div class="main-section">
+            <!-- LEFT CONTROL BUTTONS -->
+            <div class="left-controls">
+                <button class="ctrl-btn yellow" onclick="triggerLoadSample()">LOAD</button>
+                <button class="ctrl-btn orange" onclick="chopToSlices()">CHOP</button>
+                <button class="ctrl-btn yellow">BANK</button>
+                <button class="ctrl-btn yellow">TRACK</button>
+                <button class="ctrl-btn gray">MENU</button>
+                <button class="ctrl-btn red" onclick="exportSample()">EXPORT</button>
+            </div>
+
+            <!-- PAD GRID (CENTER) -->
+            <div class="pad-section">
+                <div class="pad-grid" id="padGrid"></div>
+            </div>
+        </div>
+
+        <!-- BOTTOM CONTROL STRIP -->
         <div class="control-strip">
-            <button class="control-btn primary" onclick="triggerLoadSample()">
-                LOAD SAMPLE
-            </button>
+            <button class="strip-btn primary" onclick="triggerLoadSample()">LOAD SAMPLE</button>
+            <button class="strip-btn primary" onclick="chopToSlices()">CHOP TO 16</button>
+            <button class="strip-btn export" onclick="exportSample()">EXPORT WAV</button>
             <input type="file" id="audioInput" accept="audio/*" style="display: none;">
-            
-            <button class="control-btn primary" onclick="chopToSlices()">
-                CHOP TO 16
-            </button>
-
-            <button class="control-btn export-btn" onclick="exportSample()">
-                EXPORT
-            </button>
-
-            <div class="qlink-container">
-                <div class="qlink-knob"></div>
-                <div class="qlink-knob"></div>
-                <div class="qlink-knob"></div>
-                <div class="qlink-knob"></div>
-            </div>
-        </div>
-
-        <!-- PAD GRID -->
-        <div class="pad-grid" id="padGrid">
-            <!-- Pads generated by JavaScript -->
         </div>
     </div>
 
@@ -260,11 +375,59 @@
             if (!audioContext) {
                 audioContext = new (window.AudioContext || window.webkitAudioContext)();
             }
-            // Resume if suspended (required on mobile)
             if (audioContext.state === 'suspended') {
-                audioContext.resume().catch(err => console.log('AudioContext resume blocked:', err));
+                audioContext.resume().catch(err => console.log('AudioContext blocked:', err));
             }
             return audioContext;
+        }
+
+        // Draw waveform
+        function drawWaveform(buffer) {
+            const canvas = document.getElementById('waveformCanvas');
+            if (!canvas) return;
+
+            const ctx = canvas.getContext('2d');
+            const width = canvas.offsetWidth;
+            const height = canvas.offsetHeight;
+            canvas.width = width;
+            canvas.height = height;
+
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, width, height);
+
+            const data = buffer.getChannelData(0);
+            const step = Math.ceil(data.length / width);
+            const amp = height / 2;
+
+            ctx.fillStyle = '#0f0';
+            ctx.strokeStyle = '#0f0';
+            ctx.lineWidth = 1;
+
+            ctx.beginPath();
+            ctx.moveTo(0, amp);
+
+            for (let i = 0; i < width; i++) {
+                let min = 1.0;
+                let max = -1.0;
+
+                for (let j = 0; j < step; j++) {
+                    const datum = data[i * step + j];
+                    if (datum < min) min = datum;
+                    if (datum > max) max = datum;
+                }
+
+                ctx.lineTo(i, amp - max * amp);
+            }
+
+            ctx.lineTo(width, amp);
+            ctx.stroke();
+        }
+
+        // Format time
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
         }
 
         // Trigger file picker
@@ -273,38 +436,38 @@
             document.getElementById('audioInput').click();
         }
 
-        // Handle audio file loading
+        // Handle audio loading
         document.getElementById('audioInput').addEventListener('change', function(event) {
             const file = event.target.files[0];
             if (!file) return;
 
             ensureAudioContext();
-            currentSampleName = file.name;
+            currentSampleName = file.name.split('.')[0];
 
             const reader = new FileReader();
             reader.onload = function(e) {
                 try {
                     audioContext.decodeAudioData(e.target.result, function(decoded) {
                         audioBuffer = decoded;
-                        document.getElementById('sampleDisplay').textContent = file.name;
-                        document.getElementById('sliceDisplay').textContent = '';
+                        document.getElementById('sampleName').textContent = currentSampleName.substring(0, 20);
+                        document.getElementById('sampleInfo').textContent = formatTime(decoded.duration);
+                        drawWaveform(decoded);
                         slices = [];
                     }, function(err) {
-                        console.error('Error decoding audio:', err);
-                        document.getElementById('sampleDisplay').textContent = 'ERROR DECODING';
+                        console.error('Decode error:', err);
+                        document.getElementById('sampleName').textContent = 'ERROR DECODE';
                     });
                 } catch(err) {
-                    console.error('Error:', err);
-                    document.getElementById('sampleDisplay').textContent = 'ERROR LOADING';
+                    console.error('Load error:', err);
                 }
             };
             reader.readAsArrayBuffer(file);
         });
 
-        // Chop audio into 16 equal slices
+        // Chop to 16 slices
         function chopToSlices() {
             if (!audioBuffer) {
-                alert('Load a sample first');
+                alert('Load a sample first!');
                 return;
             }
 
@@ -319,15 +482,12 @@
                 });
             }
 
-            document.getElementById('sliceDisplay').textContent = '16 SLICES ✓ READY TO PLAY';
+            document.getElementById('sampleInfo').textContent = '✓ 16 SLICES';
         }
 
-        // Play a slice
+        // Play slice
         function playSlice(sliceIndex) {
-            if (!audioBuffer || !slices || slices.length === 0) {
-                console.log('No audio loaded or slices not created');
-                return;
-            }
+            if (!audioBuffer || !slices || slices.length === 0) return;
 
             ensureAudioContext();
 
@@ -338,30 +498,27 @@
                 source.connect(audioContext.destination);
                 source.start(0, slice.startTime, slice.duration);
             } catch(err) {
-                console.error('Error playing slice:', err);
+                console.error('Play error:', err);
             }
         }
 
-        // Pad hit handler (with proper event handling)
+        // Hit pad
         function hitPad(padIndex) {
-            // Ensure audio context is active
             ensureAudioContext();
 
-            // Light up the pad
             const pad = document.querySelectorAll('.mpc-pad')[padIndex];
             if (pad) {
                 pad.classList.add('active');
                 setTimeout(() => pad.classList.remove('active'), 80);
             }
 
-            // Play the slice
             playSlice(padIndex);
         }
 
-        // Export sample as WAV
+        // Export WAV
         function exportSample() {
             if (!audioBuffer) {
-                alert('Load and chop a sample first');
+                alert('Load a sample first!');
                 return;
             }
 
@@ -377,23 +534,20 @@
             source.start(0);
 
             offlineContext.startRendering().then(renderedBuffer => {
-                downloadWAV(renderedBuffer, currentSampleName || 'sample.wav');
+                downloadWAV(renderedBuffer, currentSampleName || 'mpc_sample');
             }).catch(err => {
-                console.error('Render error:', err);
+                console.error('Export error:', err);
                 alert('Export failed');
             });
         }
 
-        // Convert AudioBuffer to WAV and download
+        // Download WAV
         function downloadWAV(audioBuffer, filename) {
             const numberOfChannels = audioBuffer.numberOfChannels;
             const sampleRate = audioBuffer.sampleRate;
-            const format = 1; // PCM
             const bitDepth = 16;
-
             const bytesPerSample = bitDepth / 8;
             const blockAlign = numberOfChannels * bytesPerSample;
-
             const frames = audioBuffer.length;
             const dataLength = frames * blockAlign;
             const buffer = new ArrayBuffer(44 + dataLength);
@@ -411,7 +565,7 @@
             writeString(offset, 'WAVE'); offset += 4;
             writeString(offset, 'fmt '); offset += 4;
             view.setUint32(offset, 16, true); offset += 4;
-            view.setUint16(offset, format, true); offset += 2;
+            view.setUint16(offset, 1, true); offset += 2;
             view.setUint16(offset, numberOfChannels, true); offset += 2;
             view.setUint32(offset, sampleRate, true); offset += 4;
             view.setUint32(offset, sampleRate * blockAlign, true); offset += 4;
@@ -420,11 +574,7 @@
             writeString(offset, 'data'); offset += 4;
             view.setUint32(offset, dataLength, true); offset += 4;
 
-            const volume = 0.8;
             let index = 44;
-            let volume_left = volume;
-            let volume_right = volume;
-
             for (let i = 0; i < frames; i++) {
                 for (let channel = 0; channel < numberOfChannels; channel++) {
                     let sample = Math.max(-1, Math.min(1, audioBuffer.getChannelData(channel)[i]));
@@ -438,35 +588,28 @@
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = filename || 'mpc_sample.wav';
+            a.download = filename + '.wav';
             a.click();
             URL.revokeObjectURL(url);
         }
 
-        // Generate 16 pads
+        // Generate pads
         function generatePads() {
             const padGrid = document.getElementById('padGrid');
             padGrid.innerHTML = '';
 
-            const padNumbers = [
-                16, 15, 14, 13,
-                12, 11, 10,  9,
-                 8,  7,  6,  5,
-                 4,  3,  2,  1
-            ];
+            const padNumbers = [16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
 
             padNumbers.forEach((num, idx) => {
                 const pad = document.createElement('button');
                 pad.className = 'mpc-pad';
-                pad.innerHTML = `<span class="pad-label">P${num}</span>`;
-                
-                // Touch support
+                pad.textContent = `P${num}`;
+
                 pad.addEventListener('touchstart', (e) => {
                     e.preventDefault();
                     hitPad(idx);
                 }, {passive: false});
 
-                // Mouse support
                 pad.addEventListener('mousedown', () => {
                     hitPad(idx);
                 });
@@ -475,7 +618,7 @@
             });
         }
 
-        // Initialize on load
+        // Initialize
         window.addEventListener('DOMContentLoaded', generatePads);
     </script>
 </body>
