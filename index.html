@@ -3,510 +3,327 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>AKAI MPC SAMPLE</title>
+    <title>AKAI MPC</title>
     <style>
-        * {
-            -webkit-user-select: none;
-            user-select: none;
-            -webkit-touch-callout: none;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-user-select: none; user-select: none; }
+        html, body { width: 100%; height: 100%; font-family: Arial; background: #000; }
+        body { display: flex; }
         
-        html, body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            background: #000;
-            font-family: Arial, sans-serif;
-        }
-
         .container {
             width: 100vw;
             height: 100vh;
-            display: flex;
-            flex-direction: column;
-            background: linear-gradient(135deg, #d4c5a0 0%, #c9bfa0 50%, #bfb595 100%);
-            box-sizing: border-box;
-            overflow: hidden;
-            padding: 4px;
-            gap: 3px;
+            display: grid;
+            grid-template-rows: 35px 70px 30px 1fr;
+            gap: 5px;
+            padding: 5px;
+            background: #b3a090;
         }
-
-        /* HEADER - MINIMAL */
+        
         .header {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 4px;
+        }
+        
+        .btn {
+            border: 2px solid #333;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 9px;
+            cursor: pointer;
+            color: #000;
+            box-shadow: 0 2px 4px #000;
+        }
+        
+        .btn:active { transform: translateY(1px); }
+        .btn-yellow { background: #ffdd00; }
+        .btn-orange { background: #ff8800; }
+        .btn-green { background: #22dd22; }
+        .btn-red { background: #ff4444; color: #fff; }
+        
+        .lcd {
+            background: #000;
+            border: 3px solid #333;
+            border-radius: 4px;
             display: flex;
             gap: 3px;
-            flex-shrink: 0;
-            height: 28px;
+            padding: 3px;
+            overflow: hidden;
         }
-
-        .btn-header {
+        
+        #waveCanvas {
             flex: 1;
-            padding: 4px;
-            font-size: 9px;
-            font-weight: bold;
-            border: 2px solid #1a1a1a;
-            border-radius: 3px;
-            cursor: pointer;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-            transition: all 0.05s;
-            color: #000;
+            background: #0a2a3a;
+            border-radius: 2px;
         }
-
-        .btn-header:active {
-            transform: translateY(2px);
-            box-shadow: 0 0 2px rgba(0,0,0,0.3);
-        }
-
-        .btn-orange { background: linear-gradient(135deg, #ff8833 0%, #ff6600 100%); }
-        .btn-yellow { background: linear-gradient(135deg, #ffdd44 0%, #ffcc00 100%); }
-        .btn-green { background: linear-gradient(135deg, #44dd44 0%, #22aa22 100%); }
-        .btn-red { background: linear-gradient(135deg, #ff5544 0%, #dd3322 100%); color: #fff; }
-
-        /* LCD - COMPACT */
-        .lcd-section {
-            flex-shrink: 0;
-            height: 60px;
-            background: linear-gradient(180deg, #000 0%, #1a1a1a 100%);
-            border: 3px solid #333;
-            border-radius: 3px;
+        
+        .info {
             display: flex;
             flex-direction: column;
-            overflow: hidden;
-            box-shadow: inset 0 4px 8px rgba(0,0,0,0.8);
+            gap: 2px;
+            color: #0f0;
+            font-size: 7px;
+            min-width: 35px;
         }
-
-        .lcd-header {
-            background: linear-gradient(90deg, #ff6600, #ff8800);
-            color: #000;
-            padding: 2px 4px;
+        
+        .info-box {
+            background: rgba(0,0,0,0.7);
+            border: 1px solid #0f0;
+            padding: 2px;
+            border-radius: 2px;
+            text-align: center;
+        }
+        
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 4px;
+        }
+        
+        .controls button {
+            background: #555;
+            color: #fff;
+            border: 1px solid #222;
+            border-radius: 3px;
             font-size: 8px;
             font-weight: bold;
-            text-align: center;
-            flex-shrink: 0;
-            border-bottom: 2px solid #ff5500;
-        }
-
-        .lcd-content {
-            flex: 1;
-            display: flex;
-            gap: 3px;
-            padding: 2px;
-        }
-
-        .waveform-display {
-            flex: 1;
-            background: linear-gradient(180deg, #0a3a52 0%, #051f2e 100%);
-            border: 1px solid #000;
-            border-radius: 2px;
-            position: relative;
-            cursor: crosshair;
-        }
-
-        .waveform-canvas {
-            width: 100%;
-            height: 100%;
-            display: block;
-        }
-
-        .lcd-info {
-            display: flex;
-            flex-direction: column;
-            gap: 1px;
-            color: #00ff00;
-            font-size: 6px;
-            font-family: 'Courier New', monospace;
-            text-align: right;
-            min-width: 40px;
-        }
-
-        .info-item {
-            background: rgba(0,0,0,0.5);
-            padding: 1px 2px;
-            border: 1px solid #0f0;
-            border-radius: 1px;
-        }
-
-        /* SMALL CONTROLS */
-        .quick-controls {
-            display: flex;
-            gap: 2px;
-            flex-shrink: 0;
-            height: 24px;
-        }
-
-        .small-btn {
-            padding: 3px 4px;
-            font-size: 7px;
-            font-weight: bold;
-            border: 1px solid #1a1a1a;
-            border-radius: 2px;
             cursor: pointer;
-            background: linear-gradient(135deg, #555 0%, #333 100%);
-            color: #fff;
-            transition: all 0.05s;
-            flex: 1;
         }
-
-        .small-btn:active {
-            transform: scale(0.9);
-        }
-
-        /* PAD GRID - MAIN FOCUS - TAKES UP REST OF SPACE */
-        .pads-section {
-            flex: 1;
-            display: flex;
-            overflow: hidden;
-            padding: 3px;
-            gap: 3px;
-            min-height: 200px;
-        }
-
-        .pad-grid {
+        
+        .pads-container {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             grid-template-rows: repeat(4, 1fr);
-            gap: 3px;
-            flex: 1;
-            overflow: hidden;
+            gap: 4px;
             width: 100%;
             height: 100%;
         }
-
+        
         .pad {
-            background: linear-gradient(135deg, #555 0%, #333 100%);
-            border: 2px solid #1a1a1a;
-            border-radius: 3px;
+            background: linear-gradient(135deg, #666, #333);
+            border: 2px solid #111;
+            border-radius: 4px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 14px;
             font-weight: bold;
-            color: #aaa;
-            transition: all 0.05s;
-            touch-action: none;
-            box-shadow: 0 3px 6px rgba(0,0,0,0.7), inset 0 1px 2px rgba(255,255,255,0.1);
-            position: relative;
-            overflow: hidden;
+            font-size: 16px;
+            color: #999;
+            box-shadow: 0 3px 6px #000, inset 0 1px 2px rgba(255,255,255,0.1);
+            transition: 0.05s;
         }
-
-        .pad::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.1), transparent);
-            pointer-events: none;
-        }
-
+        
         .pad:active, .pad.active {
-            background: linear-gradient(135deg, #ff8833 0%, #ff6600 100%);
+            background: linear-gradient(135deg, #ff8833, #ff6600);
             color: #fff;
-            box-shadow: 0 0 12px #ff8800, inset 0 1px 2px rgba(255,255,255,0.3);
-            transform: scale(0.88);
+            box-shadow: 0 0 10px #ff8800, inset 0 1px 2px rgba(255,255,255,0.3);
+            transform: scale(0.95);
         }
-
+        
         .pad.loaded {
-            background: linear-gradient(135deg, #4a7a4a 0%, #2a5a2a 100%);
+            background: linear-gradient(135deg, #4a7a4a, #2a5a2a);
             color: #00ff00;
             border-color: #00cc00;
-        }
-
-        .pad.loaded:active {
-            background: linear-gradient(135deg, #ff8833 0%, #ff6600 100%);
-            color: #fff;
-            box-shadow: 0 0 12px #ff8800;
-        }
-
-        input[type="file"] {
-            display: none;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- HEADER -->
         <div class="header">
-            <button class="btn-header btn-yellow" onclick="loadSample()">LOAD</button>
-            <button class="btn-header btn-orange" onclick="autoChop16()">AUTO</button>
-            <button class="btn-header btn-green" onclick="playSeq()">▶</button>
-            <button class="btn-header btn-red" onclick="exportBeat()">EXPORT</button>
+            <button class="btn btn-yellow" onclick="loadAudio()">LOAD</button>
+            <button class="btn btn-orange" onclick="autoChop()">AUTO 16</button>
+            <button class="btn btn-green" onclick="playAll()">▶ PLAY</button>
+            <button class="btn btn-red" onclick="exportWAV()">EXPORT</button>
         </div>
-
-        <!-- LCD SCREEN -->
-        <div class="lcd-section">
-            <div class="lcd-header">🔊 AKAI MPC SAMPLE</div>
-            <div class="lcd-content">
-                <div class="waveform-display" id="waveContainer">
-                    <canvas id="waveCanvas" class="waveform-canvas"></canvas>
-                </div>
-                <div class="lcd-info">
-                    <div class="info-item" id="sampleName">-</div>
-                    <div class="info-item" id="sampleDur">0s</div>
-                    <div class="info-item" id="sliceCount">0</div>
-                </div>
+        
+        <div class="lcd">
+            <canvas id="waveCanvas"></canvas>
+            <div class="info">
+                <div class="info-box" id="fname">-</div>
+                <div class="info-box" id="flen">0s</div>
+                <div class="info-box" id="fslices">0</div>
             </div>
         </div>
-
-        <!-- QUICK CONTROLS -->
-        <div class="quick-controls">
-            <button class="small-btn" onclick="chopStart()">◄ START</button>
-            <button class="small-btn" onclick="chopEnd()">END ►</button>
-            <button class="small-btn" onclick="setPad()">SET</button>
-            <button class="small-btn" onclick="stopSeq()">⏹</button>
+        
+        <div class="controls">
+            <button onclick="setStart()">◄ START</button>
+            <button onclick="setEnd()">END ►</button>
+            <button onclick="assignPad()">ASSIGN</button>
+            <button onclick="stopAll()">⏹ STOP</button>
         </div>
-
-        <!-- 4x4 PAD GRID - MAIN -->
-        <div class="pads-section">
-            <div class="pad-grid" id="padGrid"></div>
-        </div>
+        
+        <div class="pads-container" id="pads"></div>
     </div>
-
-    <input type="file" id="audioInput" accept="audio/*">
-
+    
+    <input type="file" id="file" accept="audio/*" style="display:none">
+    
     <script>
-        let audioContext = null;
-        let audioBuffer = null;
-
-        let pads = Array(16).fill(null).map(() => ({
-            buffer: null,
-            start: 0,
-            end: 0
-        }));
-
-        let currentPad = 0;
-        let chopStart = 0;
-        let chopEnd = 0;
-        let tempo = 120;
-        let isPlaying = false;
-
-        function ensureAudioContext() {
-            if (!audioContext) {
-                audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            }
-            if (audioContext.state === 'suspended') {
-                audioContext.resume();
-            }
-            return audioContext;
+        let ctx = null, buf = null, padData = Array(16).fill(0).map(() => ({b:null,s:0,e:0}));
+        let chS = 0, chE = 0, curP = 0, play = false;
+        
+        function ensureCtx() {
+            if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
+            if (ctx.state === 'suspended') ctx.resume();
+            return ctx;
         }
-
-        // LOAD SAMPLE
-        function loadSample() {
-            ensureAudioContext();
-            document.getElementById('audioInput').click();
+        
+        function loadAudio() {
+            ensureCtx();
+            document.getElementById('file').click();
         }
-
-        document.getElementById('audioInput').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-
-            ensureAudioContext();
-            const reader = new FileReader();
-            reader.onload = function(evt) {
-                audioContext.decodeAudioData(evt.target.result, function(decoded) {
-                    audioBuffer = decoded;
-                    chopStart = 0;
-                    chopEnd = decoded.length;
-                    document.getElementById('sampleName').textContent = file.name.substring(0, 8);
-                    document.getElementById('sampleDur').textContent = decoded.duration.toFixed(1) + 's';
-                    drawWaveform();
-                    console.log('Loaded:', file.name);
-                }, err => {
-                    console.error('Decode error:', err);
-                    alert('Audio error');
-                });
+        
+        document.getElementById('file').onchange = function(e) {
+            const f = e.target.files[0];
+            if (!f) return;
+            const r = new FileReader();
+            r.onload = function(evt) {
+                ensureCtx();
+                ctx.decodeAudioData(evt.target.result, d => {
+                    buf = d;
+                    chS = 0; chE = d.length;
+                    document.getElementById('fname').textContent = f.name.slice(0,8);
+                    document.getElementById('flen').textContent = d.duration.toFixed(1) + 's';
+                    draw();
+                }, e => alert('Audio error'));
             };
-            reader.readAsArrayBuffer(file);
-        });
-
-        // DRAW WAVEFORM
-        function drawWaveform() {
-            const canvas = document.getElementById('waveCanvas');
-            if (!canvas) return;
-
-            const ctx = canvas.getContext('2d');
-            const w = canvas.offsetWidth;
-            const h = canvas.offsetHeight;
-            canvas.width = w;
-            canvas.height = h;
-
-            ctx.fillStyle = 'rgba(10, 42, 58, 0.5)';
-            ctx.fillRect(0, 0, w, h);
-
-            if (!audioBuffer) return;
-
-            const data = audioBuffer.getChannelData(0);
-            const step = Math.ceil(data.length / w);
-            const mid = h / 2;
-
-            ctx.strokeStyle = '#00ff00';
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-
-            for (let i = 0; i < w; i++) {
-                let min = 1, max = -1;
-                for (let j = 0; j < step; j++) {
-                    const val = data[(i * step + j) % data.length] || 0;
-                    min = Math.min(min, val);
-                    max = Math.max(max, val);
-                }
-                const y = mid - max * mid;
-                i === 0 ? ctx.moveTo(i, y) : ctx.lineTo(i, y);
-            }
-            ctx.stroke();
-
-            // Draw slice
-            if (chopEnd > chopStart && audioBuffer) {
-                const x1 = (chopStart / audioBuffer.length) * w;
-                const x2 = (chopEnd / audioBuffer.length) * w;
-                ctx.fillStyle = 'rgba(255, 136, 0, 0.2)';
-                ctx.fillRect(x1, 0, x2 - x1, h);
-
-                ctx.strokeStyle = '#ff8800';
-                ctx.lineWidth = 1;
-                ctx.beginPath();
-                ctx.moveTo(x1, 0);
-                ctx.lineTo(x1, h);
-                ctx.stroke();
-                ctx.beginPath();
-                ctx.moveTo(x2, 0);
-                ctx.lineTo(x2, h);
-                ctx.stroke();
-            }
-        }
-
-        // WAVEFORM CLICK
-        document.getElementById('waveContainer').addEventListener('click', function(e) {
-            if (!audioBuffer) return;
-            const rect = this.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const pct = x / rect.width;
-            const sample = Math.floor(pct * audioBuffer.length);
-
-            if (chopEnd === audioBuffer.length || (chopStart === 0 && chopEnd === audioBuffer.length)) {
-                chopStart = sample;
-            } else {
-                chopEnd = sample;
-                if (chopEnd < chopStart) [chopStart, chopEnd] = [chopEnd, chopStart];
-            }
-            drawWaveform();
-        });
-
-        function chopStart() {
-            if (!audioBuffer) return;
-            chopStart = 0;
-            drawWaveform();
-        }
-
-        function chopEnd() {
-            if (!audioBuffer) return;
-            chopEnd = audioBuffer.length;
-            drawWaveform();
-        }
-
-        // AUTO CHOP 16
-        function autoChop16() {
-            if (!audioBuffer) {
-                alert('Load sample first');
-                return;
-            }
-
-            const sliceLen = audioBuffer.length / 16;
-            for (let i = 0; i < 16; i++) {
-                pads[i].buffer = audioBuffer;
-                pads[i].start = Math.floor(i * sliceLen);
-                pads[i].end = Math.floor((i + 1) * sliceLen);
-            }
-
-            document.querySelectorAll('.pad').forEach((el) => {
-                el.classList.add('loaded');
-            });
-
-            document.getElementById('sliceCount').textContent = '16';
-        }
-
-        // SET PAD
-        function setPad() {
-            if (!audioBuffer || chopEnd <= chopStart) {
-                alert('Select slice first');
-                return;
-            }
-
-            pads[currentPad].buffer = audioBuffer;
-            pads[currentPad].start = chopStart;
-            pads[currentPad].end = chopEnd;
-
-            const padEl = document.querySelectorAll('.pad')[currentPad];
-            padEl.classList.add('loaded');
-
-            const count = pads.filter(p => p.buffer).length;
-            document.getElementById('sliceCount').textContent = count;
-        }
-
-        // PLAY PAD
-        function playPad(idx) {
-            ensureAudioContext();
-            const pad = pads[idx];
-            if (!pad.buffer || pad.end <= pad.start) return;
-
-            const start = pad.start / pad.buffer.sampleRate;
-            const dur = (pad.end - pad.start) / pad.buffer.sampleRate;
-
-            try {
-                const src = audioContext.createBufferSource();
-                src.buffer = pad.buffer;
-                src.connect(audioContext.destination);
-                src.start(0, start, dur);
-            } catch (err) {
-                console.error('Play error:', err);
-            }
-
-            const padEl = document.querySelectorAll('.pad')[idx];
-            padEl.classList.add('active');
-            setTimeout(() => padEl.classList.remove('active'), 100);
-        }
-
-        // PLAY SEQUENCE
-        function playSeq() {
-            ensureAudioContext();
-            if (isPlaying) return;
-            isPlaying = true;
+            r.readAsArrayBuffer(f);
+        };
+        
+        function draw() {
+            const c = document.getElementById('waveCanvas');
+            if (!c || !buf) return;
+            const g = c.getContext('2d');
+            const w = c.width = c.offsetWidth;
+            const h = c.height = c.offsetHeight;
             
-            let step = 0;
+            g.fillStyle = '#0a2a3a';
+            g.fillRect(0, 0, w, h);
+            
+            const d = buf.getChannelData(0);
+            const st = Math.ceil(d.length / w);
+            const m = h / 2;
+            
+            g.strokeStyle = '#0f0';
+            g.lineWidth = 1;
+            g.beginPath();
+            
+            for (let i = 0; i < w; i++) {
+                let mn = 1, mx = -1;
+                for (let j = 0; j < st; j++) {
+                    const v = d[i * st + j] || 0;
+                    mn = Math.min(mn, v);
+                    mx = Math.max(mx, v);
+                }
+                const y = m - mx * m;
+                i === 0 ? g.moveTo(i, y) : g.lineTo(i, y);
+            }
+            g.stroke();
+            
+            if (chE > chS) {
+                const x1 = (chS / buf.length) * w;
+                const x2 = (chE / buf.length) * w;
+                g.fillStyle = 'rgba(255,136,0,0.2)';
+                g.fillRect(x1, 0, x2-x1, h);
+                g.strokeStyle = '#ff8800';
+                g.lineWidth = 2;
+                g.beginPath();
+                g.moveTo(x1, 0); g.lineTo(x1, h);
+                g.stroke();
+                g.beginPath();
+                g.moveTo(x2, 0); g.lineTo(x2, h);
+                g.stroke();
+            }
+        }
+        
+        document.getElementById('waveCanvas').onclick = function(e) {
+            if (!buf) return;
+            const r = this.getBoundingClientRect();
+            const x = e.clientX - r.left;
+            const s = Math.floor((x / r.width) * buf.length);
+            if (chE === buf.length || (chS === 0 && chE === buf.length)) {
+                chS = s;
+            } else {
+                chE = s;
+                if (chE < chS) [chS, chE] = [chE, chS];
+            }
+            draw();
+        };
+        
+        function setStart() {
+            if (!buf) return;
+            chS = 0;
+            draw();
+        }
+        
+        function setEnd() {
+            if (!buf) return;
+            chE = buf.length;
+            draw();
+        }
+        
+        function autoChop() {
+            if (!buf) return alert('Load audio first');
+            const len = buf.length / 16;
+            for (let i = 0; i < 16; i++) {
+                padData[i] = {b: buf, s: Math.floor(i * len), e: Math.floor((i+1) * len)};
+            }
+            document.querySelectorAll('.pad').forEach(p => p.classList.add('loaded'));
+            document.getElementById('fslices').textContent = '16';
+        }
+        
+        function assignPad() {
+            if (!buf || chE <= chS) return alert('Select slice');
+            padData[curP] = {b: buf, s: chS, e: chE};
+            document.querySelectorAll('.pad')[curP].classList.add('loaded');
+            const cnt = padData.filter(p => p.b).length;
+            document.getElementById('fslices').textContent = cnt;
+        }
+        
+        function playPad(i) {
+            ensureCtx();
+            const p = padData[i];
+            if (!p.b || p.e <= p.s) return;
+            const src = ctx.createBufferSource();
+            src.buffer = p.b;
+            src.connect(ctx.destination);
+            const st = p.s / p.b.sampleRate;
+            const d = (p.e - p.s) / p.b.sampleRate;
+            src.start(0, st, d);
+            
+            const el = document.querySelectorAll('.pad')[i];
+            el.classList.add('active');
+            setTimeout(() => el.classList.remove('active'), 100);
+        }
+        
+        function playAll() {
+            ensureCtx();
+            if (play) return;
+            play = true;
+            let i = 0;
             function run() {
-                if (!isPlaying) return;
-                playPad(step % 16);
-                step = (step + 1) % 16;
+                if (!play) return;
+                playPad(i % 16);
+                i++;
                 setTimeout(run, 250);
             }
             run();
         }
-
-        function stopSeq() {
-            isPlaying = false;
+        
+        function stopAll() {
+            play = false;
         }
-
-        // EXPORT
-        function exportBeat() {
-            if (!audioBuffer) {
-                alert('Load sample first');
-                return;
-            }
-
-            const ctx = new OfflineAudioContext(audioBuffer.numberOfChannels, audioBuffer.length, audioBuffer.sampleRate);
+        
+        function exportWAV() {
+            if (!buf) return alert('Load audio first');
+            const ctx = new OfflineAudioContext(buf.numberOfChannels, buf.length, buf.sampleRate);
             const src = ctx.createBufferSource();
-            src.buffer = audioBuffer;
+            src.buffer = buf;
             src.connect(ctx.destination);
             src.start(0);
-
-            ctx.startRendering().then(buf => {
-                const wav = toWAV(buf);
-                const blob = new Blob([wav], { type: 'audio/wav' });
-                const url = URL.createObjectURL(blob);
+            ctx.startRendering().then(b => {
+                const wav = toWav(b);
+                const url = URL.createObjectURL(new Blob([wav], {type: 'audio/wav'}));
                 const a = document.createElement('a');
                 a.href = url;
                 a.download = 'sample.wav';
@@ -514,70 +331,54 @@
                 URL.revokeObjectURL(url);
             });
         }
-
-        function toWAV(buf) {
-            const ch = buf.numberOfChannels;
-            const sr = buf.sampleRate;
-            const len = buf.length * ch * 2;
-
+        
+        function toWav(b) {
+            const ch = b.numberOfChannels;
+            const sr = b.sampleRate;
+            const len = b.length * ch * 2;
             const view = new DataView(new ArrayBuffer(44 + len));
-            const write = (off, str) => {
-                for (let i = 0; i < str.length; i++) {
-                    view.setUint8(off + i, str.charCodeAt(i));
-                }
-            };
-
+            
+            const write = (o, s) => { for (let i = 0; i < s.length; i++) view.setUint8(o+i, s.charCodeAt(i)); };
             write(0, 'RIFF');
-            view.setUint32(4, 36 + len, true);
+            view.setUint32(4, 36+len, 1);
             write(8, 'WAVE');
             write(12, 'fmt ');
-            view.setUint32(16, 16, true);
-            view.setUint16(20, 1, true);
-            view.setUint16(22, ch, true);
-            view.setUint32(24, sr, true);
-            view.setUint32(28, sr * ch * 2, true);
-            view.setUint16(32, ch * 2, true);
-            view.setUint16(34, 16, true);
+            view.setUint32(16, 16, 1);
+            view.setUint16(20, 1, 1);
+            view.setUint16(22, ch, 1);
+            view.setUint32(24, sr, 1);
+            view.setUint32(28, sr*ch*2, 1);
+            view.setUint16(32, ch*2, 1);
+            view.setUint16(34, 16, 1);
             write(36, 'data');
-            view.setUint32(40, len, true);
-
+            view.setUint32(40, len, 1);
+            
             let off = 44;
-            for (let i = 0; i < buf.length; i++) {
+            for (let i = 0; i < b.length; i++) {
                 for (let c = 0; c < ch; c++) {
-                    const s = Math.max(-1, Math.min(1, buf.getChannelData(c)[i]));
-                    view.setInt16(off, s * 0x7fff, true);
+                    const s = Math.max(-1, Math.min(1, b.getChannelData(c)[i]));
+                    view.setInt16(off, s * 0x7fff, 1);
                     off += 2;
                 }
             }
             return view.buffer;
         }
-
-        // INIT
-        window.addEventListener('load', function() {
-            ensureAudioContext();
-
-            // Create pad grid
-            const grid = document.getElementById('padGrid');
-            const mpcNumbers = [13, 14, 15, 16, 9, 10, 11, 12, 5, 6, 7, 8, 1, 2, 3, 4];
+        
+        window.addEventListener('load', () => {
+            ensureCtx();
+            const g = document.getElementById('pads');
+            const nums = [13,14,15,16,9,10,11,12,5,6,7,8,1,2,3,4];
             
             for (let i = 0; i < 16; i++) {
-                const pad = document.createElement('button');
-                pad.className = 'pad';
-                pad.textContent = mpcNumbers[i];
-                pad.addEventListener('touchstart', e => { e.preventDefault(); playPad(i); currentPad = i; }, { passive: false });
-                pad.addEventListener('mousedown', () => { playPad(i); currentPad = i; });
-                grid.appendChild(pad);
+                const p = document.createElement('button');
+                p.className = 'pad';
+                p.textContent = nums[i];
+                p.onmousedown = () => { playPad(i); curP = i; };
+                p.ontouchstart = (e) => { e.preventDefault(); playPad(i); curP = i; };
+                g.appendChild(p);
             }
-
-            // Resume audio on touch
-            document.addEventListener('touchstart', () => {
-                if (audioContext.state === 'suspended') {
-                    audioContext.resume();
-                }
-            }, { passive: false });
-
-            drawWaveform();
-            console.log('MPC Sample Ready');
+            
+            draw();
         });
     </script>
 </body>
