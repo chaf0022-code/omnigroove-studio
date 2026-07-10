@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OmniGroove Studio</title>
+    <script src="https://tailwindcss.com"></script>
+    <style>
+        .mpc-pad:active { transform: scale(0.95); background-color: #f97316 !important; box-shadow: 0 0 15px #f97316; }
+        .white-key:active { background-color: #3b82f6 !important; }
+        .black-key:active { background-color: #2563eb !important; }
+    </style>
+</head>
+<body class="bg-zinc-950 text-white font-sans h-screen flex flex-col p-4 select-none">
+    <div class="h-1/3 w-full border-b border-zinc-800 flex flex-col justify-between pb-4 mb-4">
+        <div class="flex justify-between items-center bg-zinc-900 p-3 rounded-lg border border-zinc-800">
+            <span class="text-orange-500 font-bold tracking-widest text-sm">OMNIGROOVE STUDIO</span>
+            <button id="vinylSimBtn" onclick="toggleVinylSim()" class="bg-zinc-800 hover:bg-zinc-700 px-3 py-1 rounded text-xs border border-zinc-700 text-zinc-400">SP-404 VINYL SIM</button>
+        </div>
+        <div class="w-full bg-zinc-900 h-20 rounded-lg border border-zinc-800 flex items-center justify-center relative overflow-hidden">
+            <span class="text-xs text-zinc-500 tracking-widest z-10">[ HORIZONTAL HANDYTRAX SCRATCH DECK ]</span>
+        </div>
+    </div>
+    <div class="h-2/3 w-full flex flex-col md:flex-row gap-4">
+        <div class="w-full md:w-5/12 bg-zinc-900 border border-zinc-800 rounded-xl p-4 flex flex-col justify-between shadow-2xl">
+            <div class="grid grid-cols-4 grid-rows-4 gap-3 h-full">
+                <script>
+                    for(let i = 16; i >= 1; i--) {
+                        document.write(`<button onmousedown="playDrum(${i})" class="mpc-pad bg-zinc-800 border-b-4 border-zinc-950 rounded-lg flex items-end p-2 text-xs font-bold text-zinc-500 transition-all duration-75">PAD ${i}</button>`);
+                    }
+                </script>
+            </div>
+        </div>
+        <div class="w-full md:w-7/12 bg-zinc-900 border border-zinc-800 rounded-xl p-4 flex relative shadow-2xl overflow-hidden h-full">
+            <script>
+                const keys = [
+                    { note: 48, isBlack: false }, { note: 49, isBlack: true },
+                    { note: 50, isBlack: false }, { note: 51, isBlack: true },
+                    { note: 52, isBlack: false }, { note: 53, isBlack: false },
+                    { note: 54, isBlack: true }, { note: 55, isBlack: false },
+                    { note: 56, isBlack: true }, { note: 57, isBlack: false },
+                    { note: 58, isBlack: true }, { note: 59, isBlack: false },
+                    { note: 60, isBlack: false }, { note: 61, isBlack: true },
+                    { note: 62, isBlack: false }, { note: 63, isBlack: true }
+                ];
+                keys.forEach(key => {
+                    if(!key.isBlack) {
+                        document.write(`<div onmousedown="playSynth(${key.note})" class="white-key flex-1 bg-zinc-100 mx-0.5 rounded-b border border-zinc-300 cursor-pointer h-full transition-colors duration-75"></div>`);
+                    } else {
+                        document.write(`<div onmousedown="playSynth(${key.note})" class="black-key bg-zinc-950 border border-zinc-800 rounded-b cursor-pointer h-3/5 w-6 -mx-3 z-10 transition-colors duration-75"></div>`);
+                    }
+                });
+            </script>
+        </div>
+    </div>
+    <script>
+        let audioCtx = null;
+        let vinylSimActive = false;
+        let noiseNode = null;
+        function initAudio() { if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } }
+        function playDrum(padNum) {
+            initAudio();
+            let osc = audioCtx.createOscillator();
+            let gain = audioCtx.createGain();
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            if (padNum % 4 === 1) {
+                osc.frequency.setValueAtTime(120, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                gain.gain.setValueAtTime(1, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.3);
+            } else if (padNum % 4 === 2) {
+                osc.type = 'triangle'; osc.frequency.setValueAtTime(250, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.7, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.2);
+            } else {
+                osc.type = 'sawtooth'; osc.frequency.setValueAtTime(1000 + (padNum * 100), audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.3, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.05);
+            }
+        }
+        function playSynth(midiNote) {
+            initAudio();
+            let freq = Math.pow(2, (midiNote - 69) / 12) * 440;
+            let osc = audioCtx.createOscillator(); let gain = audioCtx.createGain();
+            osc.type = 'sawtooth'; osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+            gain.gain.setValueAtTime(0.4, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.8);
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.8);
+        }
+        function toggleVinylSim() {
+            initAudio();
+            const btn = document.getElementById('vinylSimBtn');
+            if(!vinylSimActive) {
+                vinylSimActive = true;
+                btn.classList.remove('bg-zinc-800', 'text-zinc-400'); btn.classList.add('bg-orange-500', 'text-white', 'border-orange-400');
+                let bufferSize = 2 * audioCtx.sampleRate, noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate), output = noiseBuffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) { output[i] = Math.random() * 2 - 1; }
+                noiseNode = audioCtx.createBufferSource(); noiseNode.buffer = noiseBuffer; noiseNode.loop = true;
+                let filter = audioCtx.createBiquadFilter(); filter.type = 'bandpass'; filter.frequency.value = 1000;
+                let noiseGain = audioCtx.createGain(); noiseGain.gain.value = 0.05;
+                noiseNode.connect(filter); filter.connect(noiseGain); noiseGain.connect(audioCtx.destination); noiseNode.start();
+            } else {
+                vinylSimActive = false;
+                btn.classList.remove('bg-orange-500', 'text-white', 'border-orange-400'); btn.classList.add('bg-zinc-800', 'text-zinc-400');
+                if(noiseNode) { noiseNode.stop(); }
+            }
+        }
+    </script>
+</body>
+</html>
+
