@@ -10,6 +10,7 @@
             -webkit-user-select: none;
             -moz-user-select: none;
             user-select: none;
+            -webkit-touch-callout: none;
         }
         
         body, html {
@@ -18,35 +19,39 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
+            background: #000;
         }
 
         .mpc-body {
-            background-color: #24272c;
-            background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 0);
-            background-size: 8px 8px;
-            border: 8px solid #141518;
+            background-color: #c9c9a8;
+            background-image: linear-gradient(45deg, rgba(0,0,0,0.05) 25%, transparent 25%, transparent 75%, rgba(0,0,0,0.05) 75%, rgba(0,0,0,0.05)), linear-gradient(45deg, rgba(0,0,0,0.05) 25%, transparent 25%, transparent 75%, rgba(0,0,0,0.05) 75%, rgba(0,0,0,0.05));
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+            border: 8px solid #1a1a1a;
             height: 100vh;
             width: 100vw;
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            box-sizing: border-box;
         }
 
         .lcd-screen {
             background: linear-gradient(180deg, #1a1f2e 0%, #0d1117 100%);
-            border: 3px solid #ff6600;
-            border-radius: 6px;
-            box-shadow: 0 0 12px rgba(255, 102, 0, 0.3), inset 0 2px 8px rgba(0, 0, 0, 0.8);
+            border: 4px solid #333;
+            border-radius: 8px;
+            box-shadow: 0 0 12px rgba(0, 0, 0, 0.9), inset 0 2px 8px rgba(0, 0, 0, 0.8);
             padding: 0;
             overflow: hidden;
             flex-shrink: 0;
+            margin: 8px;
         }
 
         .lcd-header {
             background: linear-gradient(90deg, #ff6600, #ff8833);
             color: #000;
-            padding: 4px 12px;
-            font-size: 12px;
+            padding: 6px 12px;
+            font-size: 13px;
             font-weight: bold;
             letter-spacing: 2px;
             text-align: center;
@@ -57,11 +62,11 @@
             padding: 12px;
             color: #0f0;
             font-family: 'Courier New', monospace;
-            font-size: 14px;
+            font-size: 15px;
             font-weight: bold;
-            line-height: 1.5;
+            line-height: 1.6;
             text-shadow: 0 0 4px #0f0;
-            min-height: 60px;
+            min-height: 70px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -69,55 +74,57 @@
 
         .control-strip {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             align-items: center;
             flex-wrap: wrap;
-            padding: 10px;
+            padding: 8px;
             flex-shrink: 0;
+            background: rgba(0, 0, 0, 0.2);
         }
 
         .control-btn {
-            background: linear-gradient(135deg, #3a3e44 0%, #23262b 100%);
-            border: 2px solid #0e0f11;
-            border-radius: 6px;
-            padding: 8px 14px;
+            background: linear-gradient(135deg, #5a5a5a 0%, #3a3a3a 100%);
+            border: 2px solid #1a1a1a;
+            border-radius: 4px;
+            padding: 8px 12px;
             color: #fff;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: bold;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
             cursor: pointer;
-            box-shadow: 0 4px 0 #0a0b0d, inset 0 1px 2px rgba(255,255,255,0.1);
+            box-shadow: 0 3px 0 #0a0a0a, inset 0 1px 2px rgba(255,255,255,0.15);
             transition: all 0.05s ease;
             flex-shrink: 0;
         }
 
         .control-btn:active {
-            transform: translateY(4px);
+            transform: translateY(3px);
             box-shadow: 0 0 0 #000, 0 0 12px #ff6600;
         }
 
-        .control-btn.load {
+        .control-btn.primary {
             background: linear-gradient(135deg, #ff8833, #ff6600);
             color: #000;
             font-weight: bold;
+            box-shadow: 0 3px 0 #cc4400, inset 0 1px 2px rgba(255,255,255,0.2);
         }
 
-        .control-btn.load:active {
+        .control-btn.primary:active {
             box-shadow: 0 0 0 #000, 0 0 20px #ffaa44;
         }
 
         .qlink-container {
             display: flex;
-            gap: 8px;
+            gap: 6px;
             flex-shrink: 0;
         }
 
         .qlink-knob {
-            width: 36px;
-            height: 36px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
-            background: radial-gradient(circle at 50% 35%, #55595f 0%, #1c1e22 70%);
-            border: 2px solid #0d0e10;
+            background: radial-gradient(circle at 50% 35%, #666 0%, #222 70%);
+            border: 2px solid #0a0a0a;
             box-shadow: 0 3px 5px rgba(0,0,0,0.6), inset 0 1px 2px rgba(255,255,255,0.2);
             position: relative;
             flex-shrink: 0;
@@ -126,66 +133,40 @@
         .qlink-knob::before {
             content: "";
             position: absolute;
-            top: 4px;
+            top: 3px;
             left: 50%;
             width: 2px;
-            height: 8px;
+            height: 6px;
             background: #ff6600;
             transform: translateX(-50%);
             border-radius: 2px;
-        }
-
-        .transport-buttons {
-            display: flex;
-            gap: 8px;
-            flex-shrink: 0;
-        }
-
-        .transport-btn {
-            background: linear-gradient(135deg, #3a3e44 0%, #23262b 100%);
-            border: 2px solid #0e0f11;
-            border-radius: 6px;
-            padding: 6px 10px;
-            color: #fff;
-            font-size: 10px;
-            font-weight: bold;
-            letter-spacing: 0.5px;
-            cursor: pointer;
-            box-shadow: 0 3px 0 #0a0b0d, inset 0 1px 1px rgba(255,255,255,0.1);
-            transition: all 0.05s ease;
-            flex-shrink: 0;
-        }
-
-        .transport-btn:active {
-            transform: translateY(3px);
-            box-shadow: 0 0 0 #000;
         }
 
         .pad-grid {
             flex: 1;
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-            padding: 12px;
+            gap: 10px;
+            padding: 10px;
             overflow: hidden;
         }
 
         .mpc-pad {
             aspect-ratio: 1 / 1;
-            min-height: 60px;
-            background: linear-gradient(135deg, #4a5058 0%, #23262b 100%);
-            border: 2px solid #0f1114;
-            border-radius: 10px;
-            box-shadow: 0 6px 0 #0a0b0d, inset 0 2px 3px rgba(255,255,255,0.18);
+            min-height: 50px;
+            background: linear-gradient(135deg, #555 0%, #222 100%);
+            border: 3px solid #0f1114;
+            border-radius: 6px;
+            box-shadow: 0 5px 0 #0a0b0d, inset 0 2px 3px rgba(255,255,255,0.15);
             cursor: pointer;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             align-items: flex-start;
-            padding: 8px;
-            font-size: 11px;
+            padding: 6px;
+            font-size: 10px;
             font-weight: bold;
-            color: #999;
+            color: #aaa;
             transition: all 0.05s ease;
             position: relative;
             overflow: hidden;
@@ -195,56 +176,63 @@
         .mpc-pad::after {
             content: "";
             position: absolute;
-            inset: 4px;
-            border-radius: 8px;
-            box-shadow: inset 0 0 6px rgba(255,102,0,0.15);
+            inset: 3px;
+            border-radius: 4px;
+            box-shadow: inset 0 0 6px rgba(255,102,0,0.1);
             pointer-events: none;
         }
 
         .mpc-pad.active {
             background: #ff6600 !important;
-            color: #000;
-            transform: translateY(6px);
-            box-shadow: 0 0 0 #000, 0 0 24px #ff6600;
-        }
-
-        .pad-number {
-            position: relative;
-            z-index: 1;
-            font-size: 10px;
-            color: inherit;
+            color: #fff;
+            transform: translateY(5px);
+            box-shadow: 0 0 0 #000, 0 0 20px #ff6600;
         }
 
         .pad-label {
             position: relative;
             z-index: 1;
-            font-size: 12px;
-            font-weight: bold;
+            font-size: 9px;
             color: inherit;
             align-self: flex-end;
         }
+
+        .export-btn {
+            background: linear-gradient(135deg, #4a7c3c 0%, #2a5c1c 100%);
+            color: #fff;
+            font-weight: bold;
+            box-shadow: 0 3px 0 #1a3c0c, inset 0 1px 2px rgba(255,255,255,0.15);
+        }
+
+        .export-btn:active {
+            box-shadow: 0 0 0 #000, 0 0 15px #66dd00;
+        }
     </style>
 </head>
-<body class="bg-black">
+<body>
     <div class="mpc-body">
         <!-- LCD SCREEN -->
         <div class="lcd-screen" style="height: 28%;">
             <div class="lcd-header">AKAI MPC ONE</div>
             <div class="lcd-content">
-                <div id="sampleDisplay">NO SAMPLE LOADED</div>
-                <div id="sliceDisplay" style="font-size: 12px; color: #0f0; margin-top: 4px;"></div>
+                <div id="sampleDisplay" style="font-size: 13px;">NO SAMPLE LOADED</div>
+                <div id="sliceDisplay" style="font-size: 11px; color: #0f0; margin-top: 4px;"></div>
             </div>
         </div>
 
         <!-- CONTROL STRIP -->
         <div class="control-strip">
-            <button class="control-btn load" onclick="document.getElementById('audioInput').click()">
+            <button class="control-btn primary" onclick="triggerLoadSample()">
                 LOAD SAMPLE
             </button>
-            <input type="file" id="audioInput" accept="audio/*" style="display: none;" onchange="handleAudioLoad(event)">
+            <input type="file" id="audioInput" accept="audio/*" style="display: none;">
             
-            <button class="control-btn" onclick="chopToSlices()">
+            <button class="control-btn primary" onclick="chopToSlices()">
                 CHOP TO 16
+            </button>
+
+            <button class="control-btn export-btn" onclick="exportSample()">
+                EXPORT
             </button>
 
             <div class="qlink-container">
@@ -253,57 +241,65 @@
                 <div class="qlink-knob"></div>
                 <div class="qlink-knob"></div>
             </div>
-
-            <div class="transport-buttons">
-                <button class="transport-btn">REC</button>
-                <button class="transport-btn">PLAY</button>
-                <button class="transport-btn">STOP</button>
-            </div>
         </div>
 
         <!-- PAD GRID -->
         <div class="pad-grid" id="padGrid">
-            <!-- Pads will be generated here by JavaScript -->
+            <!-- Pads generated by JavaScript -->
         </div>
     </div>
 
     <script>
-        // Web Audio API initialization
+        // ==================== AUDIO ENGINE ====================
         let audioContext = null;
         let audioBuffer = null;
         let slices = [];
+        let currentSampleName = '';
 
-        // Initialize or resume audio context on first user interaction
         function ensureAudioContext() {
             if (!audioContext) {
                 audioContext = new (window.AudioContext || window.webkitAudioContext)();
             }
+            // Resume if suspended (required on mobile)
             if (audioContext.state === 'suspended') {
-                audioContext.resume();
+                audioContext.resume().catch(err => console.log('AudioContext resume blocked:', err));
             }
+            return audioContext;
+        }
+
+        // Trigger file picker
+        function triggerLoadSample() {
+            ensureAudioContext();
+            document.getElementById('audioInput').click();
         }
 
         // Handle audio file loading
-        function handleAudioLoad(event) {
+        document.getElementById('audioInput').addEventListener('change', function(event) {
             const file = event.target.files[0];
             if (!file) return;
 
             ensureAudioContext();
+            currentSampleName = file.name;
 
             const reader = new FileReader();
             reader.onload = function(e) {
-                audioContext.decodeAudioData(e.target.result, function(decoded) {
-                    audioBuffer = decoded;
-                    document.getElementById('sampleDisplay').textContent = file.name;
-                    document.getElementById('sliceDisplay').textContent = '';
-                    slices = [];
-                }, function(err) {
-                    console.error('Error decoding audio:', err);
+                try {
+                    audioContext.decodeAudioData(e.target.result, function(decoded) {
+                        audioBuffer = decoded;
+                        document.getElementById('sampleDisplay').textContent = file.name;
+                        document.getElementById('sliceDisplay').textContent = '';
+                        slices = [];
+                    }, function(err) {
+                        console.error('Error decoding audio:', err);
+                        document.getElementById('sampleDisplay').textContent = 'ERROR DECODING';
+                    });
+                } catch(err) {
+                    console.error('Error:', err);
                     document.getElementById('sampleDisplay').textContent = 'ERROR LOADING';
-                });
+                }
             };
             reader.readAsArrayBuffer(file);
-        }
+        });
 
         // Chop audio into 16 equal slices
         function chopToSlices() {
@@ -323,38 +319,131 @@
                 });
             }
 
-            document.getElementById('sliceDisplay').textContent = '16 SLICES READY';
+            document.getElementById('sliceDisplay').textContent = '16 SLICES ✓ READY TO PLAY';
         }
 
         // Play a slice
         function playSlice(sliceIndex) {
-            if (!audioBuffer || !slices.length) return;
+            if (!audioBuffer || !slices || slices.length === 0) {
+                console.log('No audio loaded or slices not created');
+                return;
+            }
 
             ensureAudioContext();
 
             const slice = slices[sliceIndex];
-            const source = audioContext.createBufferSource();
-            source.buffer = audioBuffer;
-            source.connect(audioContext.destination);
-            source.start(0, slice.startTime, slice.duration);
+            try {
+                const source = audioContext.createBufferSource();
+                source.buffer = audioBuffer;
+                source.connect(audioContext.destination);
+                source.start(0, slice.startTime, slice.duration);
+            } catch(err) {
+                console.error('Error playing slice:', err);
+            }
         }
 
-        // Pad interaction
+        // Pad hit handler (with proper event handling)
         function hitPad(padIndex) {
-            event.preventDefault();
+            // Ensure audio context is active
+            ensureAudioContext();
 
             // Light up the pad
             const pad = document.querySelectorAll('.mpc-pad')[padIndex];
             if (pad) {
                 pad.classList.add('active');
-                setTimeout(() => pad.classList.remove('active'), 100);
+                setTimeout(() => pad.classList.remove('active'), 80);
             }
 
             // Play the slice
             playSlice(padIndex);
         }
 
-        // Generate 16 pads (MPC numbering: bottom-left = PAD 1, top-row = 13-16)
+        // Export sample as WAV
+        function exportSample() {
+            if (!audioBuffer) {
+                alert('Load and chop a sample first');
+                return;
+            }
+
+            const offlineContext = new OfflineAudioContext(
+                audioBuffer.numberOfChannels,
+                audioBuffer.length,
+                audioBuffer.sampleRate
+            );
+
+            const source = offlineContext.createBufferSource();
+            source.buffer = audioBuffer;
+            source.connect(offlineContext.destination);
+            source.start(0);
+
+            offlineContext.startRendering().then(renderedBuffer => {
+                downloadWAV(renderedBuffer, currentSampleName || 'sample.wav');
+            }).catch(err => {
+                console.error('Render error:', err);
+                alert('Export failed');
+            });
+        }
+
+        // Convert AudioBuffer to WAV and download
+        function downloadWAV(audioBuffer, filename) {
+            const numberOfChannels = audioBuffer.numberOfChannels;
+            const sampleRate = audioBuffer.sampleRate;
+            const format = 1; // PCM
+            const bitDepth = 16;
+
+            const bytesPerSample = bitDepth / 8;
+            const blockAlign = numberOfChannels * bytesPerSample;
+
+            const frames = audioBuffer.length;
+            const dataLength = frames * blockAlign;
+            const buffer = new ArrayBuffer(44 + dataLength);
+            const view = new DataView(buffer);
+
+            const writeString = (offset, string) => {
+                for (let i = 0; i < string.length; i++) {
+                    view.setUint8(offset + i, string.charCodeAt(i));
+                }
+            };
+
+            let offset = 0;
+            writeString(offset, 'RIFF'); offset += 4;
+            view.setUint32(offset, 36 + dataLength, true); offset += 4;
+            writeString(offset, 'WAVE'); offset += 4;
+            writeString(offset, 'fmt '); offset += 4;
+            view.setUint32(offset, 16, true); offset += 4;
+            view.setUint16(offset, format, true); offset += 2;
+            view.setUint16(offset, numberOfChannels, true); offset += 2;
+            view.setUint32(offset, sampleRate, true); offset += 4;
+            view.setUint32(offset, sampleRate * blockAlign, true); offset += 4;
+            view.setUint16(offset, blockAlign, true); offset += 2;
+            view.setUint16(offset, bitDepth, true); offset += 2;
+            writeString(offset, 'data'); offset += 4;
+            view.setUint32(offset, dataLength, true); offset += 4;
+
+            const volume = 0.8;
+            let index = 44;
+            let volume_left = volume;
+            let volume_right = volume;
+
+            for (let i = 0; i < frames; i++) {
+                for (let channel = 0; channel < numberOfChannels; channel++) {
+                    let sample = Math.max(-1, Math.min(1, audioBuffer.getChannelData(channel)[i]));
+                    sample = sample < 0 ? sample * 0x8000 : sample * 0x7fff;
+                    view.setInt16(index, sample, true);
+                    index += 2;
+                }
+            }
+
+            const blob = new Blob([buffer], {type: 'audio/wav'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename || 'mpc_sample.wav';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // Generate 16 pads
         function generatePads() {
             const padGrid = document.getElementById('padGrid');
             padGrid.innerHTML = '';
@@ -369,20 +458,24 @@
             padNumbers.forEach((num, idx) => {
                 const pad = document.createElement('button');
                 pad.className = 'mpc-pad';
-                pad.innerHTML = `
-                    <span class="pad-number">PAD ${num}</span>
-                    <span class="pad-label">A${num.toString().padStart(2, '0')}</span>
-                `;
-                pad.ontouchstart = (e) => {
+                pad.innerHTML = `<span class="pad-label">P${num}</span>`;
+                
+                // Touch support
+                pad.addEventListener('touchstart', (e) => {
                     e.preventDefault();
                     hitPad(idx);
-                };
-                pad.onmousedown = () => hitPad(idx);
+                }, {passive: false});
+
+                // Mouse support
+                pad.addEventListener('mousedown', () => {
+                    hitPad(idx);
+                });
+
                 padGrid.appendChild(pad);
             });
         }
 
-        // Initialize on page load
+        // Initialize on load
         window.addEventListener('DOMContentLoaded', generatePads);
     </script>
 </body>
