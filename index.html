@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>AKAI MPC ONE</title>
+    <title>AKAI MPC ONE - Full Workstation</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         * {
@@ -32,16 +32,18 @@
             border-radius: 16px;
             box-sizing: border-box;
             box-shadow: 0 20px 60px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.3);
+            overflow: hidden;
         }
 
+        /* ===== TOP LCD SCREEN ===== */
         .top-panel {
             display: flex;
             gap: 12px;
             padding: 12px;
             flex-shrink: 0;
+            height: 22%;
         }
 
-        /* LCD SCREEN */
         .lcd-panel {
             flex: 1;
             background: linear-gradient(180deg, #0a0a0a 0%, #1a1a1a 100%);
@@ -57,9 +59,9 @@
             background: linear-gradient(90deg, #ff6600 0%, #ffaa33 100%);
             color: #000;
             padding: 8px 14px;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: bold;
-            letter-spacing: 3px;
+            letter-spacing: 2px;
             text-align: center;
             box-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
@@ -71,6 +73,7 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            overflow-y: auto;
         }
 
         .lcd-waveform {
@@ -83,25 +86,31 @@
             justify-content: center;
             position: relative;
             overflow: hidden;
+            margin-bottom: 8px;
         }
 
         .waveform-canvas {
             width: 100%;
             height: 100%;
+            display: block;
         }
 
         .lcd-info {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-top: 8px;
             font-family: 'Courier New', monospace;
-            font-size: 12px;
+            font-size: 11px;
             color: #0f0;
             text-shadow: 0 0 4px #0f0;
+            gap: 8px;
         }
 
-        /* SIDE KNOBS PANEL */
+        .lcd-info span {
+            flex: 1;
+            text-align: center;
+        }
+
+        /* ===== KNOBS PANEL ===== */
         .knobs-panel {
             display: flex;
             flex-direction: column;
@@ -139,14 +148,14 @@
         }
 
         .knob-label {
-            font-size: 9px;
+            font-size: 8px;
             font-weight: bold;
             color: #000;
             text-align: center;
             width: 50px;
         }
 
-        /* MAIN CONTENT */
+        /* ===== MAIN CONTENT ===== */
         .main-section {
             flex: 1;
             display: flex;
@@ -155,26 +164,28 @@
             overflow: hidden;
         }
 
-        /* LEFT CONTROL BUTTONS */
+        /* LEFT CONTROLS */
         .left-controls {
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 4px;
             flex-shrink: 0;
-            width: 60px;
+            width: 70px;
         }
 
         .ctrl-btn {
             flex: 1;
+            min-height: 28px;
             border: 2px solid #1a1a1a;
             border-radius: 4px;
             font-size: 8px;
             font-weight: bold;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.3px;
             cursor: pointer;
             box-shadow: 0 3px 0 #0a0a0a, inset 0 1px 2px rgba(255,255,255,0.2);
             transition: all 0.05s ease;
             color: #000;
+            padding: 0;
         }
 
         .ctrl-btn:active {
@@ -182,35 +193,68 @@
             box-shadow: 0 0 0, inset 0 1px 2px rgba(255,255,255,0.1);
         }
 
-        .ctrl-btn.yellow {
-            background: linear-gradient(135deg, #ffdd44 0%, #ffcc00 100%);
-        }
+        .ctrl-btn.yellow { background: linear-gradient(135deg, #ffdd44 0%, #ffcc00 100%); }
+        .ctrl-btn.orange { background: linear-gradient(135deg, #ff8833 0%, #ff6600 100%); }
+        .ctrl-btn.red { background: linear-gradient(135deg, #ff5544 0%, #dd3322 100%); }
+        .ctrl-btn.green { background: linear-gradient(135deg, #44dd44 0%, #22aa22 100%); }
+        .ctrl-btn.gray { background: linear-gradient(135deg, #888 0%, #666 100%); }
 
-        .ctrl-btn.red {
-            background: linear-gradient(135deg, #ff5544 0%, #dd3322 100%);
-        }
-
-        .ctrl-btn.orange {
-            background: linear-gradient(135deg, #ff8833 0%, #ff6600 100%);
-        }
-
-        .ctrl-btn.gray {
-            background: linear-gradient(135deg, #888 0%, #666 100%);
-        }
-
-        /* PAD GRID */
-        .pad-section {
+        /* ===== SEQUENCER / PAD GRID SECTION ===== */
+        .center-section {
             flex: 1;
             display: flex;
             flex-direction: column;
+            gap: 8px;
             overflow: hidden;
         }
 
+        /* SEQUENCER ROW */
+        .sequencer-row {
+            display: flex;
+            gap: 4px;
+            flex-shrink: 0;
+            background: rgba(0,0,0,0.2);
+            padding: 8px;
+            border-radius: 6px;
+            overflow-x: auto;
+            overflow-y: hidden;
+        }
+
+        .seq-step {
+            flex: 0 0 24px;
+            height: 24px;
+            background: linear-gradient(135deg, #333 0%, #111 100%);
+            border: 2px solid #1a1a1a;
+            border-radius: 3px;
+            cursor: pointer;
+            box-shadow: inset 0 1px 2px rgba(255,255,255,0.1);
+            transition: all 0.1s ease;
+            font-size: 7px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-weight: bold;
+        }
+
+        .seq-step.active {
+            background: linear-gradient(135deg, #ff8833 0%, #ff6600 100%);
+            color: #fff;
+            box-shadow: 0 0 12px #ff6600;
+        }
+
+        .seq-step.playing {
+            background: #0f0;
+            color: #000;
+            box-shadow: 0 0 12px #0f0;
+        }
+
+        /* PAD GRID */
         .pad-grid {
+            flex: 1;
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-            flex: 1;
+            gap: 10px;
             overflow: hidden;
         }
 
@@ -256,7 +300,7 @@
             font-weight: bold;
         }
 
-        /* CONTROL STRIP */
+        /* ===== BOTTOM CONTROL STRIP ===== */
         .control-strip {
             display: flex;
             gap: 8px;
@@ -274,7 +318,7 @@
             border-radius: 4px;
             padding: 6px 10px;
             color: #fff;
-            font-size: 10px;
+            font-size: 9px;
             font-weight: bold;
             letter-spacing: 0.5px;
             cursor: pointer;
@@ -284,17 +328,31 @@
 
         .strip-btn:active {
             transform: translateY(2px);
-            box-shadow: 0 0 0, 0 0 12px #ff6600;
+            box-shadow: 0 0 0;
         }
 
-        .strip-btn.primary {
-            background: linear-gradient(135deg, #ff8833 0%, #ff6600 100%);
+        .strip-btn.primary { background: linear-gradient(135deg, #ff8833 0%, #ff6600 100%); color: #000; }
+        .strip-btn.play { background: linear-gradient(135deg, #44dd44 0%, #22aa22 100%); }
+        .strip-btn.stop { background: linear-gradient(135deg, #dd4444 0%, #aa2222 100%); }
+
+        .tempo-display {
             color: #000;
             font-weight: bold;
+            font-size: 11px;
+            font-family: 'Courier New', monospace;
+            background: rgba(255,255,255,0.3);
+            padding: 4px 8px;
+            border-radius: 3px;
         }
 
-        .strip-btn.export {
-            background: linear-gradient(135deg, #44aa44 0%, #229922 100%);
+        input[type="range"] {
+            width: 80px;
+            height: 6px;
+            cursor: pointer;
+        }
+
+        input[type="file"] {
+            display: none;
         }
     </style>
 </head>
@@ -302,7 +360,6 @@
     <div class="mpc-container">
         <!-- TOP PANEL: LCD + KNOBS -->
         <div class="top-panel">
-            <!-- LCD SCREEN -->
             <div class="lcd-panel">
                 <div class="lcd-header">AKAI MPC ONE</div>
                 <div class="lcd-content">
@@ -311,12 +368,12 @@
                     </div>
                     <div class="lcd-info">
                         <span id="sampleName">NO SAMPLE</span>
-                        <span id="sampleInfo">0:00</span>
+                        <span id="sampleDuration">0:00</span>
+                        <span id="seqStatus">●●●●●●●●●●●●●●●●</span>
                     </div>
                 </div>
             </div>
 
-            <!-- RIGHT KNOBS -->
             <div class="knobs-panel">
                 <div class="knob-group">
                     <div class="knob"></div>
@@ -324,7 +381,7 @@
                 </div>
                 <div class="knob-group">
                     <div class="knob"></div>
-                    <span class="knob-label">PAN</span>
+                    <span class="knob-label">SWING</span>
                 </div>
                 <div class="knob-group">
                     <div class="knob"></div>
@@ -337,20 +394,24 @@
             </div>
         </div>
 
-        <!-- MAIN SECTION: CONTROLS + PADS -->
+        <!-- MAIN SECTION: CONTROLS + SEQUENCER + PADS -->
         <div class="main-section">
-            <!-- LEFT CONTROL BUTTONS -->
+            <!-- LEFT BUTTONS -->
             <div class="left-controls">
                 <button class="ctrl-btn yellow" onclick="triggerLoadSample()">LOAD</button>
                 <button class="ctrl-btn orange" onclick="chopToSlices()">CHOP</button>
-                <button class="ctrl-btn yellow">BANK</button>
-                <button class="ctrl-btn yellow">TRACK</button>
-                <button class="ctrl-btn gray">MENU</button>
+                <button class="ctrl-btn yellow" onclick="clearSequence()">CLR SEQ</button>
+                <button class="ctrl-btn gray" onclick="bankA()">BANK A</button>
+                <button class="ctrl-btn gray" onclick="bankB()">BANK B</button>
                 <button class="ctrl-btn red" onclick="exportSample()">EXPORT</button>
             </div>
 
-            <!-- PAD GRID (CENTER) -->
-            <div class="pad-section">
+            <!-- CENTER: SEQUENCER + PADS -->
+            <div class="center-section">
+                <!-- SEQUENCER STEPS -->
+                <div class="sequencer-row" id="sequencerRow"></div>
+
+                <!-- PAD GRID -->
                 <div class="pad-grid" id="padGrid"></div>
             </div>
         </div>
@@ -359,29 +420,43 @@
         <div class="control-strip">
             <button class="strip-btn primary" onclick="triggerLoadSample()">LOAD SAMPLE</button>
             <button class="strip-btn primary" onclick="chopToSlices()">CHOP TO 16</button>
-            <button class="strip-btn export" onclick="exportSample()">EXPORT WAV</button>
-            <input type="file" id="audioInput" accept="audio/*" style="display: none;">
+            
+            <span style="margin-left: auto; margin-right: 8px; color: #000; font-weight: bold; font-size: 9px;">TEMPO:</span>
+            <input type="range" id="tempoSlider" min="60" max="180" value="120" onchange="setTempo(this.value)" style="width: 60px;">
+            <span class="tempo-display" id="tempoDisplay">120 BPM</span>
+
+            <button class="strip-btn play" onclick="playSequence()">▶ PLAY</button>
+            <button class="strip-btn stop" onclick="stopSequence()">⏹ STOP</button>
+            <button class="strip-btn" style="background: linear-gradient(135deg, #44aa44 0%, #229922 100%);" onclick="exportSample()">EXPORT WAV</button>
+
+            <input type="file" id="audioInput" accept="audio/*">
         </div>
     </div>
 
     <script>
-        // ==================== AUDIO ENGINE ====================
+        // ==================== GLOBAL STATE ====================
         let audioContext = null;
         let audioBuffer = null;
-        let slices = [];
-        let currentSampleName = '';
+        let pads = new Array(16).fill(null).map(() => ({ slices: [], name: '' }));
+        let currentPadIndex = 0;
+        let sequence = new Array(16).fill(-1); // -1 = no pad, 0-15 = pad number
+        let isSequencerPlaying = false;
+        let currentStep = 0;
+        let tempo = 120;
+        let swing = 0.5;
+        let sequenceTimer = null;
 
         function ensureAudioContext() {
             if (!audioContext) {
                 audioContext = new (window.AudioContext || window.webkitAudioContext)();
             }
             if (audioContext.state === 'suspended') {
-                audioContext.resume().catch(err => console.log('AudioContext blocked:', err));
+                audioContext.resume().catch(err => console.log('AudioContext blocked'));
             }
             return audioContext;
         }
 
-        // Draw waveform
+        // ==================== WAVEFORM DRAWING ====================
         function drawWaveform(buffer) {
             const canvas = document.getElementById('waveformCanvas');
             if (!canvas) return;
@@ -407,15 +482,12 @@
             ctx.moveTo(0, amp);
 
             for (let i = 0; i < width; i++) {
-                let min = 1.0;
-                let max = -1.0;
-
+                let min = 1.0, max = -1.0;
                 for (let j = 0; j < step; j++) {
                     const datum = data[i * step + j];
                     if (datum < min) min = datum;
                     if (datum > max) max = datum;
                 }
-
                 ctx.lineTo(i, amp - max * amp);
             }
 
@@ -423,40 +495,34 @@
             ctx.stroke();
         }
 
-        // Format time
         function formatTime(seconds) {
             const mins = Math.floor(seconds / 60);
             const secs = Math.floor(seconds % 60);
             return `${mins}:${secs.toString().padStart(2, '0')}`;
         }
 
-        // Trigger file picker
+        // ==================== FILE LOADING ====================
         function triggerLoadSample() {
             ensureAudioContext();
             document.getElementById('audioInput').click();
         }
 
-        // Handle audio loading
         document.getElementById('audioInput').addEventListener('change', function(event) {
             const file = event.target.files[0];
             if (!file) return;
 
             ensureAudioContext();
-            currentSampleName = file.name.split('.')[0];
-
             const reader = new FileReader();
             reader.onload = function(e) {
                 try {
                     audioContext.decodeAudioData(e.target.result, function(decoded) {
                         audioBuffer = decoded;
-                        document.getElementById('sampleName').textContent = currentSampleName.substring(0, 20);
-                        document.getElementById('sampleInfo').textContent = formatTime(decoded.duration);
+                        pads[currentPadIndex].name = file.name.split('.')[0].substring(0, 12);
+                        pads[currentPadIndex].slices = [];
+                        document.getElementById('sampleName').textContent = pads[currentPadIndex].name;
+                        document.getElementById('sampleDuration').textContent = formatTime(decoded.duration);
                         drawWaveform(decoded);
-                        slices = [];
-                    }, function(err) {
-                        console.error('Decode error:', err);
-                        document.getElementById('sampleName').textContent = 'ERROR DECODE';
-                    });
+                    }, err => console.error('Decode error:', err));
                 } catch(err) {
                     console.error('Load error:', err);
                 }
@@ -464,7 +530,7 @@
             reader.readAsArrayBuffer(file);
         });
 
-        // Chop to 16 slices
+        // ==================== SLICING ====================
         function chopToSlices() {
             if (!audioBuffer) {
                 alert('Load a sample first!');
@@ -473,25 +539,34 @@
 
             const totalDuration = audioBuffer.duration;
             const sliceDuration = totalDuration / 16;
+            pads[currentPadIndex].slices = [];
 
-            slices = [];
             for (let i = 0; i < 16; i++) {
-                slices.push({
+                pads[currentPadIndex].slices.push({
                     startTime: i * sliceDuration,
                     duration: sliceDuration
                 });
             }
 
-            document.getElementById('sampleInfo').textContent = '✓ 16 SLICES';
+            document.getElementById('sampleDuration').textContent = '✓ 16 SLICES';
         }
 
-        // Play slice
-        function playSlice(sliceIndex) {
-            if (!audioBuffer || !slices || slices.length === 0) return;
+        // ==================== MPC SWING ALGORITHM ====================
+        function applySwing(stepTime, swing) {
+            const isOffBeat = (Math.floor(stepTime * 2) % 2) === 1;
+            if (isOffBeat) {
+                return stepTime + (swing - 0.5) * 0.1;
+            }
+            return stepTime;
+        }
+
+        // ==================== PLAYBACK ====================
+        function playSlice(sliceIndex, padIndex) {
+            if (!audioBuffer || !pads[padIndex].slices || pads[padIndex].slices.length === 0) return;
 
             ensureAudioContext();
 
-            const slice = slices[sliceIndex];
+            const slice = pads[padIndex].slices[sliceIndex];
             try {
                 const source = audioContext.createBufferSource();
                 source.buffer = audioBuffer;
@@ -502,7 +577,45 @@
             }
         }
 
-        // Hit pad
+        function playSequence() {
+            if (isSequencerPlaying) return;
+            isSequencerPlaying = true;
+            currentStep = 0;
+            runSequencer();
+        }
+
+        function stopSequence() {
+            isSequencerPlaying = false;
+            if (sequenceTimer) clearTimeout(sequenceTimer);
+            currentStep = 0;
+            document.querySelectorAll('.seq-step').forEach(el => el.classList.remove('playing'));
+        }
+
+        function runSequencer() {
+            if (!isSequencerPlaying) return;
+
+            const stepDuration = (60000 / tempo) / 4;
+            const swingAmount = (swing - 0.5) * 0.2;
+
+            // Play pad at current step
+            if (sequence[currentStep] >= 0) {
+                const padIdx = sequence[currentStep];
+                const sliceIdx = currentStep % (pads[padIdx].slices.length || 1);
+                playSlice(sliceIdx, padIdx);
+            }
+
+            // Update visual
+            document.querySelectorAll('.seq-step').forEach((el, i) => {
+                el.classList.toggle('playing', i === currentStep);
+            });
+
+            // Next step
+            currentStep = (currentStep + 1) % 16;
+            const delay = currentStep % 2 === 1 ? stepDuration * (1 + swingAmount) : stepDuration * (1 - swingAmount);
+            sequenceTimer = setTimeout(() => runSequencer(), delay);
+        }
+
+        // ==================== PAD INTERACTION ====================
         function hitPad(padIndex) {
             ensureAudioContext();
 
@@ -512,10 +625,50 @@
                 setTimeout(() => pad.classList.remove('active'), 80);
             }
 
-            playSlice(padIndex);
+            // Play first slice of pad
+            if (pads[padIndex].slices.length > 0) {
+                playSlice(0, padIndex);
+            }
         }
 
-        // Export WAV
+        // ==================== SEQUENCER STEP SELECTION ====================
+        function selectSequencerStep(stepIndex, padIndex) {
+            sequence[stepIndex] = sequence[stepIndex] === padIndex ? -1 : padIndex;
+            updateSequencerDisplay();
+        }
+
+        function updateSequencerDisplay() {
+            const stepElems = document.querySelectorAll('.seq-step');
+            stepElems.forEach((el, i) => {
+                el.classList.toggle('active', sequence[i] >= 0);
+                el.textContent = sequence[i] >= 0 ? `P${sequence[i] + 1}` : i + 1;
+            });
+        }
+
+        // ==================== CONTROLS ====================
+        function setTempo(value) {
+            tempo = parseInt(value);
+            document.getElementById('tempoDisplay').textContent = tempo + ' BPM';
+        }
+
+        function clearSequence() {
+            sequence.fill(-1);
+            updateSequencerDisplay();
+        }
+
+        function bankA() {
+            currentPadIndex = 0;
+            updateSequencerDisplay();
+            alert('Bank A Selected');
+        }
+
+        function bankB() {
+            currentPadIndex = 8;
+            updateSequencerDisplay();
+            alert('Bank B Selected');
+        }
+
+        // ==================== EXPORT ====================
         function exportSample() {
             if (!audioBuffer) {
                 alert('Load a sample first!');
@@ -534,14 +687,13 @@
             source.start(0);
 
             offlineContext.startRendering().then(renderedBuffer => {
-                downloadWAV(renderedBuffer, currentSampleName || 'mpc_sample');
+                downloadWAV(renderedBuffer, pads[currentPadIndex].name || 'mpc_sample');
             }).catch(err => {
                 console.error('Export error:', err);
                 alert('Export failed');
             });
         }
 
-        // Download WAV
         function downloadWAV(audioBuffer, filename) {
             const numberOfChannels = audioBuffer.numberOfChannels;
             const sampleRate = audioBuffer.sampleRate;
@@ -593,7 +745,7 @@
             URL.revokeObjectURL(url);
         }
 
-        // Generate pads
+        // ==================== INITIALIZATION ====================
         function generatePads() {
             const padGrid = document.getElementById('padGrid');
             padGrid.innerHTML = '';
@@ -618,8 +770,30 @@
             });
         }
 
-        // Initialize
-        window.addEventListener('DOMContentLoaded', generatePads);
+        function generateSequencer() {
+            const seqRow = document.getElementById('sequencerRow');
+            seqRow.innerHTML = '';
+
+            for (let i = 0; i < 16; i++) {
+                const step = document.createElement('button');
+                step.className = 'seq-step';
+                step.textContent = i + 1;
+
+                step.addEventListener('click', () => {
+                    selectSequencerStep(i, currentPadIndex);
+                });
+
+                seqRow.appendChild(step);
+            }
+
+            updateSequencerDisplay();
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            generatePads();
+            generateSequencer();
+            ensureAudioContext();
+        });
     </script>
 </body>
 </html>
