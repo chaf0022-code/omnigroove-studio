@@ -2,111 +2,177 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OmniGroove Studio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>OmniGroove 3D Studio</title>
     <script src="https://tailwindcss.com"></script>
     <style>
-        .mpc-pad:active { transform: scale(0.95); background-color: #f97316 !important; box-shadow: 0 0 15px #f97316; }
-        .white-key:active { background-color: #3b82f6 !important; }
-        .black-key:active { background-color: #2563eb !important; }
+        /* 3D Hardware Layering Styles (Koala Style) */
+        .mpc-body {
+            box-shadow: inset 0 4px 6px rgba(255,255,255,0.1), 0 10px 25px rgba(0,0,0,0.8);
+            background: linear-gradient(135deg, #2e3138 0%, #1c1e22 100%);
+        }
+        .mpc-pad {
+            background: linear-gradient(180deg, #4b5563 0%, #374151 100%);
+            box-shadow: 0 4px 0 #111827, inset 0 2px 2px rgba(255,255,255,0.2);
+            transition: all 0.05s ease;
+        }
+        .mpc-pad:active {
+            transform: translateY(4px);
+            box-shadow: 0 0px 0 #000, 0 0 20px #f97316;
+            background: #f97316 !important;
+        }
+        /* Mobile horizontal swipe slider container */
+        .snap-container {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
+        .snap-page {
+            flex: 0 0 100%;
+            width: 100%;
+            scroll-snap-align: start;
+        }
+        /* Hidden scrollbars */
+        .snap-container::-webkit-scrollbar { display: none; }
+        
+        /* SP-404 MKII Vinyl Knob Styles */
+        .sp-knob {
+            background: radial-gradient(circle, #4b5563 0%, #1f2937 80%);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.6), inset 0 2px 2px rgba(255,255,255,0.1);
+        }
     </style>
 </head>
-<body class="bg-zinc-950 text-white font-sans h-screen flex flex-col p-4 select-none">
-    <div class="h-1/3 w-full border-b border-zinc-800 flex flex-col justify-between pb-4 mb-4">
-        <div class="flex justify-between items-center bg-zinc-900 p-3 rounded-lg border border-zinc-800">
-            <span class="text-orange-500 font-bold tracking-widest text-sm">OMNIGROOVE STUDIO</span>
-            <button id="vinylSimBtn" onclick="toggleVinylSim()" class="bg-zinc-800 hover:bg-zinc-700 px-3 py-1 rounded text-xs border border-zinc-700 text-zinc-400">SP-404 VINYL SIM</button>
-        </div>
-        <div class="w-full bg-zinc-900 h-20 rounded-lg border border-zinc-800 flex items-center justify-center relative overflow-hidden">
-            <span class="text-xs text-zinc-500 tracking-widest z-10">[ HORIZONTAL HANDYTRAX SCRATCH DECK ]</span>
-        </div>
-    </div>
-    <div class="h-2/3 w-full flex flex-col md:flex-row gap-4">
-        <div class="w-full md:w-5/12 bg-zinc-900 border border-zinc-800 rounded-xl p-4 flex flex-col justify-between shadow-2xl">
-            <div class="grid grid-cols-4 grid-rows-4 gap-3 h-full">
-                <script>
-                    for(let i = 16; i >= 1; i--) {
-                        document.write(`<button onmousedown="playDrum(${i})" class="mpc-pad bg-zinc-800 border-b-4 border-zinc-950 rounded-lg flex items-end p-2 text-xs font-bold text-zinc-500 transition-all duration-75">PAD ${i}</button>`);
-                    }
-                </script>
+<body class="bg-zinc-950 text-white font-sans h-screen overflow-hidden select-none">
+
+    <!-- THE HORIZONTAL SWIPE CAROUSEL CONTAINER -->
+    <div class="snap-container w-full h-full">
+
+        <!-- PAGE 1: THE CORE 3D MPC ONE WORKSPACE -->
+        <div class="snap-page h-full p-4 flex flex-col justify-between mpc-body">
+            
+            <!-- MPC Top Dashboard -->
+            <div class="bg-zinc-900 border border-zinc-800 p-3 rounded-xl flex justify-between items-center shadow-inner">
+                <span class="text-orange-500 font-black tracking-widest text-sm">OMNIGROOVE 3D</span>
+                <div class="flex gap-2">
+                    <label class="bg-zinc-800 hover:bg-zinc-700 text-zinc-300 border border-zinc-700 px-3 py-1 rounded text-xs font-bold cursor-pointer">
+                        LOAD VINYL
+                        <input type="file" id="audioFile" accept="audio/*" class="hidden" onchange="handleAudioUpload(event)">
+                    </label>
+                    <button onclick="autoChop()" class="bg-orange-600 px-3 py-1 rounded text-xs font-bold text-white shadow">CHOP 16</button>
+                </div>
+            </div>
+
+            <!-- Horizontal Scratch Deck & Piano Ribbon Switch -->
+            <div class="bg-zinc-950 border-2 border-zinc-900 rounded-xl p-3 flex flex-col gap-2 shadow-inner my-2 flex-1 justify-center">
+                <div id="deckStatus" class="text-center text-[10px] text-zinc-500 tracking-wider uppercase font-bold">Swipe Right ➡️ for SP-404 FX</div>
+                <canvas id="waveformCanvas" class="w-full h-24 bg-black rounded-lg border border-zinc-900 cursor-ew-resize"></canvas>
+                
+                <!-- Micro Piano Synth Ribbon -->
+                <div class="flex h-12 bg-zinc-900 p-1 rounded-lg border border-zinc-800 overflow-x-auto gap-0.5 mt-1">
+                    <script>
+                        for(let k=40; k<=64; k++) {
+                            let isBlk = [41,43,46,48,50,53,55,58,60,62].includes(k);
+                            document.write(`<div onmousedown="playSynth(${k})" class="h-full rounded-b cursor-pointer active:bg-blue-500 ${isBlk ? 'bg-zinc-950 w-4 z-10' : 'bg-zinc-200 flex-1'}"></div>`);
+                        }
+                    </script>
+                </div>
+            </div>
+
+            <!-- Chunky 3D 16-Pad Grid Matrix -->
+            <div class="h-3/5 w-full bg-zinc-900/50 p-2 rounded-2xl border border-zinc-800/80 flex flex-col justify-between">
+                <div class="grid grid-cols-4 grid-rows-4 gap-3 h-full p-1">
+                    <script>
+                        for(let i = 16; i >= 1; i--) {
+                            document.write(`<button onmousedown="triggerPad(${i-1})" class="mpc-pad rounded-xl flex items-end p-2 text-xs font-black text-zinc-500 tracking-wider">PAD ${i}</button>`);
+                        }
+                    </script>
+                </div>
             </div>
         </div>
-        <div class="w-full md:w-7/12 bg-zinc-900 border border-zinc-800 rounded-xl p-4 flex relative shadow-2xl overflow-hidden h-full">
-            <script>
-                const keys = [
-                    { note: 48, isBlack: false }, { note: 49, isBlack: true },
-                    { note: 50, isBlack: false }, { note: 51, isBlack: true },
-                    { note: 52, isBlack: false }, { note: 53, isBlack: false },
-                    { note: 54, isBlack: true }, { note: 55, isBlack: false },
-                    { note: 56, isBlack: true }, { note: 57, isBlack: false },
-                    { note: 58, isBlack: true }, { note: 59, isBlack: false },
-                    { note: 60, isBlack: false }, { note: 61, isBlack: true },
-                    { note: 62, isBlack: false }, { note: 63, isBlack: true }
-                ];
-                keys.forEach(key => {
-                    if(!key.isBlack) {
-                        document.write(`<div onmousedown="playSynth(${key.note})" class="white-key flex-1 bg-zinc-100 mx-0.5 rounded-b border border-zinc-300 cursor-pointer h-full transition-colors duration-75"></div>`);
-                    } else {
-                        document.write(`<div onmousedown="playSynth(${key.note})" class="black-key bg-zinc-950 border border-zinc-800 rounded-b cursor-pointer h-3/5 w-6 -mx-3 z-10 transition-colors duration-75"></div>`);
-                    }
-                });
-            </script>
-        </div>
-    </div>
-    <script>
-        let audioCtx = null;
-        let vinylSimActive = false;
-        let noiseNode = null;
-        function initAudio() { if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } }
-        function playDrum(padNum) {
-            initAudio();
-            let osc = audioCtx.createOscillator();
-            let gain = audioCtx.createGain();
-            osc.connect(gain); gain.connect(audioCtx.destination);
-            if (padNum % 4 === 1) {
-                osc.frequency.setValueAtTime(120, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
-                gain.gain.setValueAtTime(1, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
-                osc.start(); osc.stop(audioCtx.currentTime + 0.3);
-            } else if (padNum % 4 === 2) {
-                osc.type = 'triangle'; osc.frequency.setValueAtTime(250, audioCtx.currentTime);
-                gain.gain.setValueAtTime(0.7, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
-                osc.start(); osc.stop(audioCtx.currentTime + 0.2);
-            } else {
-                osc.type = 'sawtooth'; osc.frequency.setValueAtTime(1000 + (padNum * 100), audioCtx.currentTime);
-                gain.gain.setValueAtTime(0.3, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
-                osc.start(); osc.stop(audioCtx.currentTime + 0.05);
-            }
-        }
-        function playSynth(midiNote) {
-            initAudio();
-            let freq = Math.pow(2, (midiNote - 69) / 12) * 440;
-            let osc = audioCtx.createOscillator(); let gain = audioCtx.createGain();
-            osc.type = 'sawtooth'; osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-            gain.gain.setValueAtTime(0.4, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.8);
-            osc.connect(gain); gain.connect(audioCtx.destination);
-            osc.start(); osc.stop(audioCtx.currentTime + 0.8);
-        }
-        function toggleVinylSim() {
-            initAudio();
-            const btn = document.getElementById('vinylSimBtn');
-            if(!vinylSimActive) {
-                vinylSimActive = true;
-                btn.classList.remove('bg-zinc-800', 'text-zinc-400'); btn.classList.add('bg-orange-500', 'text-white', 'border-orange-400');
-                let bufferSize = 2 * audioCtx.sampleRate, noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate), output = noiseBuffer.getChannelData(0);
-                for (let i = 0; i < bufferSize; i++) { output[i] = Math.random() * 2 - 1; }
-                noiseNode = audioCtx.createBufferSource(); noiseNode.buffer = noiseBuffer; noiseNode.loop = true;
-                let filter = audioCtx.createBiquadFilter(); filter.type = 'bandpass'; filter.frequency.value = 1000;
-                let noiseGain = audioCtx.createGain(); noiseGain.gain.value = 0.05;
-                noiseNode.connect(filter); filter.connect(noiseGain); noiseGain.connect(audioCtx.destination); noiseNode.start();
-            } else {
-                vinylSimActive = false;
-                btn.classList.remove('bg-orange-500', 'text-white', 'border-orange-400'); btn.classList.add('bg-zinc-800', 'text-zinc-400');
-                if(noiseNode) { noiseNode.stop(); }
-            }
-        }
-    </script>
-</body>
-</html>
 
+        <!-- PAGE 2: THE DETAILED ROLAND SP-404MKII FX PAGE (SWIPE RIGHT TO SEE) -->
+        <div class="snap-page h-full p-4 flex flex-col justify-between bg-zinc-900 border-l-4 border-black">
+            
+            <!-- SP-404 Heading -->
+            <div class="flex justify-between items-center border-b border-zinc-800 pb-2">
+                <span class="text-zinc-400 font-bold tracking-widest text-xs">⬅️ SWIPE LEFT FOR MPC MAIN</span>
+                <span class="text-orange-500 font-black tracking-widest text-sm">SP-404MKII BUS</span>
+            </div>
+
+            <!-- Giant Vinyl Hardware FX Analog Dial Grid -->
+            <div class="grid grid-cols-3 gap-4 my-4 bg-zinc-950 p-4 rounded-2xl border border-zinc-800 shadow-inner">
+                <div class="flex flex-col items-center gap-1">
+                    <div class="w-14 h-14 rounded-full sp-knob relative flex items-center justify-center border-2 border-zinc-700">
+                        <div class="w-1 h-4 bg-orange-500 absolute top-1 rounded"></div>
+                    </div>
+                    <span class="text-[10px] font-bold text-zinc-500 tracking-wider uppercase">CTRL 1 (WOW)</span>
+                </div>
+                <div class="flex flex-col items-center gap-1">
+                    <div class="w-14 h-14 rounded-full sp-knob relative flex items-center justify-center border-2 border-zinc-700">
+                        <div class="w-1 h-4 bg-orange-500 absolute top-1 rounded"></div>
+                    </div>
+                    <span class="text-[10px] font-bold text-zinc-500 tracking-wider uppercase">CTRL 2 (CRUNCH)</span>
+                </div>
+                <div class="flex flex-col items-center gap-1">
+                    <div class="w-14 h-14 rounded-full sp-knob relative flex items-center justify-center border-2 border-zinc-700">
+                        <div class="w-1 h-4 bg-orange-500 absolute top-1 rounded"></div>
+                    </div>
+                    <span class="text-[10px] font-bold text-zinc-500 tracking-wider uppercase">CTRL 3 (DRY/WET)</span>
+                </div>
+            </div>
+
+            <!-- Heavy SP-404 Performance Pads Layout Component -->
+            <div class="flex-1 w-full bg-zinc-950/80 rounded-2xl border border-zinc-800 p-4 flex flex-col justify-around gap-4 shadow-2xl">
+                <div class="text-center text-[11px] font-bold text-orange-500/80 tracking-widest uppercase border-b border-zinc-800 pb-2">Master Effects Nodes Launcher</div>
+                
+                <button id="vinylSimBtn" onclick="toggleVinylSim()" class="w-full bg-zinc-800 py-4 rounded-xl border border-zinc-700 text-xs font-black tracking-widest text-zinc-400 active:scale-95 transition-all shadow-md">
+                    [1] VINYL SIMULATOR
+                </button>
+                <button id="compBtn" onclick="toggleCompressor()" class="w-full bg-zinc-800 py-4 rounded-xl border border-zinc-700 text-xs font-black tracking-widest text-zinc-400 active:scale-95 transition-all shadow-md">
+                    [2] 303 PUMPING COMPRESSOR
+                </button>
+                <button id="cassetteBtn" onclick="toggleCassette()" class="w-full bg-zinc-800 py-4 rounded-xl border border-zinc-700 text-xs font-black tracking-widest text-zinc-400 active:scale-95 transition-all shadow-md">
+                    [3] CASSETTE TAPE DRIVE
+                </button>
+            </div>
+            
+            <div class="text-center text-[9px] text-zinc-600 font-bold uppercase tracking-widest mt-2">OmniGroove Studio Hardware Core</div>
+        </div>
+
+    </div>
+
+    <!-- AUDIO ENGINE MULTI-PAGE BUS SCRIPTS -->
+    <script>
+        let audioCtx = null, masterAudioBuffer = null, padBuffers = new Array(16).fill(null);
+        let mainVolume = null, compressorNode = null, crackleNode = null, cassetteFilter = null;
+        let isCompActive = false, isVinylSimActive = false, isCassetteActive = false;
+
+        // Turntable Canvas Variables
+        let canvas = document.getElementById('waveformCanvas'), ctx = canvas.getContext('2d');
+        let isScratching = false, scratchLastX = 0, currentPlaybackTime = 0, scratchSource = null;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                mainVolume = audioCtx.createGain(); mainVolume.gain.value = 1.0;
+                
+                // 303 Vinyl Ducking Hardware Emulation
+                compressorNode = audioCtx.createDynamicsCompressor();
+                compressorNode.threshold.setValueAtTime(-38, audioCtx.currentTime);
+                compressorNode.ratio.setValueAtTime(14, audioCtx.currentTime);
+                compressorNode.attack.setValueAtTime(0.002, audioCtx.currentTime);
+                compressorNode.release.setValueAtTime(0.09, audioCtx.currentTime);
+
+                // Cassette Filter Warmth
+                cassetteFilter = audioCtx.createBiquadFilter();
+                cassetteFilter.type = 'lowpass'; cassetteFilter.frequency.value = 6500;
+
+                mainVolume.connect(audioCtx.destination);
+            }
+        }
+
+        function handleAudioUpload(event) {
+            initAudio();
+            let file = event.target.files[0]; if (!file) return;
