@@ -3,153 +3,138 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>OmniGroove 3D Studio</title>
+    <title>OmniGroove Studio Hardware Core</title>
     <script src="https://tailwindcss.com"></script>
     <style>
-        /* 3D Hardware Layering Styles (Koala Style) */
-        .mpc-body {
-            box-shadow: inset 0 4px 6px rgba(255,255,255,0.1), 0 10px 25px rgba(0,0,0,0.8);
-            background: linear-gradient(135deg, #2e3138 0%, #1c1e22 100%);
+        /* Akai MPC One Hardware Colors & Texture */
+        .mpc-one-chassis {
+            background: linear-gradient(145deg, #2b2e33 0%, #17191c 100%);
+            border: 4px solid #111215;
+            box-shadow: inset 0 2px 3px rgba(255,255,255,0.05), 0 15px 35px rgba(0,0,0,0.9);
         }
-        .mpc-pad {
-            background: linear-gradient(180deg, #4b5563 0%, #374151 100%);
-            box-shadow: 0 4px 0 #111827, inset 0 2px 2px rgba(255,255,255,0.2);
-            transition: all 0.05s ease;
+        /* Thick Akai Square 16-Pad Matrix Styling */
+        .mpc-square-pad {
+            background: linear-gradient(180deg, #374151 0%, #1f2937 100%);
+            border: 1px solid #111827;
+            box-shadow: 0 5px 0 #0b0f17, inset 0 2px 2px rgba(255,255,255,0.15);
+            transition: all 0.04s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        .mpc-pad:active {
-            transform: translateY(4px);
+        .mpc-square-pad:active {
+            transform: translateY(5px);
             box-shadow: 0 0px 0 #000, 0 0 20px #f97316;
             background: #f97316 !important;
         }
-        /* Mobile horizontal swipe slider container */
-        .snap-container {
+        /* Roland SP-404MKII Dark Charcoal Faceplate Styling */
+        .sp-faceplate {
+            background: #1a1a1a;
+            border: 4px solid #0d0d0d;
+            box-shadow: inset 0 2px 4px rgba(255,255,255,0.05);
+        }
+        .sp-circular-display {
+            background: radial-gradient(circle, #ff5500 0%, #110400 90%);
+            border: 6px solid #2d2d2d;
+            box-shadow: inset 0 4px 10px rgba(0,0,0,0.9);
+        }
+        /* Swipe mandatory horizontal slider mechanics */
+        .hardware-deck-slider {
             display: flex;
             overflow-x: auto;
             scroll-snap-type: x mandatory;
             scroll-behavior: smooth;
             -webkit-overflow-scrolling: touch;
         }
-        .snap-page {
-            flex: 0 0 100%;
-            width: 100%;
-            scroll-snap-align: start;
-        }
-        /* Hidden scrollbars */
-        .snap-container::-webkit-scrollbar { display: none; }
-        
-        /* SP-404 MKII Vinyl Knob Styles */
-        .sp-knob {
-            background: radial-gradient(circle, #4b5563 0%, #1f2937 80%);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.6), inset 0 2px 2px rgba(255,255,255,0.1);
-        }
+        .hardware-deck-slider::-webkit-scrollbar { display: none; }
+        .hardware-page { flex: 0 0 100%; width: 100%; scroll-snap-align: start; }
     </style>
 </head>
 <body class="bg-zinc-950 text-white font-sans h-screen overflow-hidden select-none">
 
-    <!-- THE HORIZONTAL SWIPE CAROUSEL CONTAINER -->
-    <div class="snap-container w-full h-full">
+    <!-- HORIZONTAL DEVICE CAROUSEL SLIDER -->
+    <div class="hardware-deck-slider w-full h-full">
 
-        <!-- PAGE 1: THE CORE 3D MPC ONE WORKSPACE -->
-        <div class="snap-page h-full p-4 flex flex-col justify-between mpc-body">
+        <!-- PAGE 1: REPLICA AKAI MPC ONE HARDWARE INTERFACE -->
+        <div class="hardware-page h-full p-3 flex flex-col justify-between mpc-one-chassis relative">
             
-            <!-- MPC Top Dashboard -->
-            <div class="bg-zinc-900 border border-zinc-800 p-3 rounded-xl flex justify-between items-center shadow-inner">
-                <span class="text-orange-500 font-black tracking-widest text-sm">OMNIGROOVE 3D</span>
-                <div class="flex gap-2">
-                    <label class="bg-zinc-800 hover:bg-zinc-700 text-zinc-300 border border-zinc-700 px-3 py-1 rounded text-xs font-bold cursor-pointer">
-                        LOAD VINYL
+            <!-- MPC Built-in LCD Touchscreen Panel -->
+            <div class="w-full h-2/5 bg-zinc-900 border-2 border-zinc-950 rounded-lg p-2 flex flex-col justify-between shadow-inner">
+                <div class="flex justify-between items-center text-[10px] text-zinc-500 font-bold border-b border-zinc-800 pb-1">
+                    <span class="text-orange-500 font-black tracking-widest">MPC ONE STANDALONE DECK</span>
+                    <span>Swipe Right ➡️ for SP-404 FX</span>
+                </div>
+                
+                <!-- PLAYLIST ENGINE LAYER (Starts completely empty) -->
+                <div class="flex-1 overflow-y-auto my-1 py-1 px-1 bg-black/60 rounded border border-zinc-950 flex flex-col gap-1 justify-center items-center" id="playlistWindow">
+                    <div id="emptyPlaylistMsg" class="text-center text-[11px] text-zinc-500 font-black uppercase tracking-wider animate-pulse">
+                        📭 Empty Playlist - Load a Record below to Begin
+                    </div>
+                </div>
+
+                <!-- Bottom screen options -->
+                <div class="flex justify-between items-center pt-1 border-t border-zinc-800">
+                    <label class="bg-zinc-800 text-zinc-300 px-3 py-1 rounded text-[10px] font-black border border-zinc-700 cursor-pointer shadow">
+                        LOAD SAMPLE
                         <input type="file" id="audioFile" accept="audio/*" class="hidden" onchange="handleAudioUpload(event)">
                     </label>
-                    <button onclick="autoChop()" class="bg-orange-600 px-3 py-1 rounded text-xs font-bold text-white shadow">CHOP 16</button>
+                    <button onclick="autoChop()" class="bg-orange-600 px-4 py-1 rounded text-[10px] font-black text-white shadow uppercase tracking-wider">Chop 16</button>
                 </div>
             </div>
 
-            <!-- Horizontal Scratch Deck & Piano Ribbon Switch -->
-            <div class="bg-zinc-950 border-2 border-zinc-900 rounded-xl p-3 flex flex-col gap-2 shadow-inner my-2 flex-1 justify-center">
-                <div id="deckStatus" class="text-center text-[10px] text-zinc-500 tracking-wider uppercase font-bold">Swipe Right ➡️ for SP-404 FX</div>
-                <canvas id="waveformCanvas" class="w-full h-24 bg-black rounded-lg border border-zinc-900 cursor-ew-resize"></canvas>
-                
-                <!-- Micro Piano Synth Ribbon -->
-                <div class="flex h-12 bg-zinc-900 p-1 rounded-lg border border-zinc-800 overflow-x-auto gap-0.5 mt-1">
-                    <script>
-                        for(let k=40; k<=64; k++) {
-                            let isBlk = [41,43,46,48,50,53,55,58,60,62].includes(k);
-                            document.write(`<div onmousedown="playSynth(${k})" class="h-full rounded-b cursor-pointer active:bg-blue-500 ${isBlk ? 'bg-zinc-950 w-4 z-10' : 'bg-zinc-200 flex-1'}"></div>`);
-                        }
-                    </script>
-                </div>
-            </div>
-
-            <!-- Chunky 3D 16-Pad Grid Matrix -->
-            <div class="h-3/5 w-full bg-zinc-900/50 p-2 rounded-2xl border border-zinc-800/80 flex flex-col justify-between">
-                <div class="grid grid-cols-4 grid-rows-4 gap-3 h-full p-1">
+            <!-- Authentic 4x4 Grid Matrix Arrangement Box -->
+            <div class="h-3/5 w-full mt-2 bg-zinc-950/40 p-2 rounded-xl border border-zinc-900 flex flex-col justify-between shadow-inner">
+                <div class="grid grid-cols-4 grid-rows-4 gap-2.5 h-full p-0.5">
                     <script>
                         for(let i = 16; i >= 1; i--) {
-                            document.write(`<button onmousedown="triggerPad(${i-1})" class="mpc-pad rounded-xl flex items-end p-2 text-xs font-black text-zinc-500 tracking-wider">PAD ${i}</button>`);
+                            document.write(`<button onmousedown="triggerPad(${i-1})" class="mpc-square-pad rounded-md flex items-end p-1.5 text-[10px] font-black text-zinc-500 tracking-wider">PAD ${i}</button>`);
                         }
                     </script>
                 </div>
             </div>
         </div>
 
-        <!-- PAGE 2: THE DETAILED ROLAND SP-404MKII FX PAGE (SWIPE RIGHT TO SEE) -->
-        <div class="snap-page h-full p-4 flex flex-col justify-between bg-zinc-900 border-l-4 border-black">
+        <!-- PAGE 2: REPLICA ROLAND SP-404MKII + HANDYTRAX DECK WORKSPACE -->
+        <div class="hardware-page h-full p-3 flex flex-col justify-between sp-faceplate border-l-4 border-black">
             
-            <!-- SP-404 Heading -->
-            <div class="flex justify-between items-center border-b border-zinc-800 pb-2">
-                <span class="text-zinc-400 font-bold tracking-widest text-xs">⬅️ SWIPE LEFT FOR MPC MAIN</span>
-                <span class="text-orange-500 font-black tracking-widest text-sm">SP-404MKII BUS</span>
+            <!-- Top Section: Handytrax Horizontal Deck layout inside the SP Casing -->
+            <div class="w-full bg-black rounded-lg border-2 border-zinc-900 p-2 flex flex-col gap-1.5">
+                <div class="flex justify-between items-center text-[9px] font-black text-zinc-500 uppercase tracking-widest">
+                    <span>⬅️ Swipe Left for MPC One</span>
+                    <span class="text-orange-500">HandyTrax Scratch Ribbon</span>
+                </div>
+                <!-- Real-time turntable scratch target waveform ribbon -->
+                <canvas id="waveformCanvas" class="w-full h-16 bg-zinc-950 rounded cursor-ew-resize border border-zinc-900"></canvas>
             </div>
 
-            <!-- Giant Vinyl Hardware FX Analog Dial Grid -->
-            <div class="grid grid-cols-3 gap-4 my-4 bg-zinc-950 p-4 rounded-2xl border border-zinc-800 shadow-inner">
-                <div class="flex flex-col items-center gap-1">
-                    <div class="w-14 h-14 rounded-full sp-knob relative flex items-center justify-center border-2 border-zinc-700">
-                        <div class="w-1 h-4 bg-orange-500 absolute top-1 rounded"></div>
-                    </div>
-                    <span class="text-[10px] font-bold text-zinc-500 tracking-wider uppercase">CTRL 1 (WOW)</span>
-                </div>
-                <div class="flex flex-col items-center gap-1">
-                    <div class="w-14 h-14 rounded-full sp-knob relative flex items-center justify-center border-2 border-zinc-700">
-                        <div class="w-1 h-4 bg-orange-500 absolute top-1 rounded"></div>
-                    </div>
-                    <span class="text-[10px] font-bold text-zinc-500 tracking-wider uppercase">CTRL 2 (CRUNCH)</span>
-                </div>
-                <div class="flex flex-col items-center gap-1">
-                    <div class="w-14 h-14 rounded-full sp-knob relative flex items-center justify-center border-2 border-zinc-700">
-                        <div class="w-1 h-4 bg-orange-500 absolute top-1 rounded"></div>
-                    </div>
-                    <span class="text-[10px] font-bold text-zinc-500 tracking-wider uppercase">CTRL 3 (DRY/WET)</span>
+            <!-- SP-404MKII Iconic Center Circular screen -->
+            <div class="w-full flex justify-center my-1.5">
+                <div class="w-24 h-24 rounded-full sp-circular-display flex items-center justify-center flex-col text-center">
+                    <span class="text-orange-500 font-mono text-xl font-bold tracking-tighter" id="spDisplayVal">FX</span>
+                    <span class="text-[8px] text-orange-600 font-bold uppercase tracking-widest">BUS MFX</span>
                 </div>
             </div>
 
-            <!-- Heavy SP-404 Performance Pads Layout Component -->
-            <div class="flex-1 w-full bg-zinc-950/80 rounded-2xl border border-zinc-800 p-4 flex flex-col justify-around gap-4 shadow-2xl">
-                <div class="text-center text-[11px] font-bold text-orange-500/80 tracking-widest uppercase border-b border-zinc-800 pb-2">Master Effects Nodes Launcher</div>
-                
-                <button id="vinylSimBtn" onclick="toggleVinylSim()" class="w-full bg-zinc-800 py-4 rounded-xl border border-zinc-700 text-xs font-black tracking-widest text-zinc-400 active:scale-95 transition-all shadow-md">
-                    [1] VINYL SIMULATOR
+            <!-- Industrial FX Launch Button Grid Row Component -->
+            <div class="flex-1 w-full bg-zinc-950/60 rounded-xl border border-zinc-900 p-3 flex flex-col justify-around gap-2 shadow-2xl">
+                <button id="vinylSimBtn" onclick="toggleVinylSim()" class="w-full bg-zinc-800 py-3 rounded-lg border border-zinc-700 text-[11px] font-black tracking-widest text-zinc-400 shadow">
+                    VINYL SIMULATOR
                 </button>
-                <button id="compBtn" onclick="toggleCompressor()" class="w-full bg-zinc-800 py-4 rounded-xl border border-zinc-700 text-xs font-black tracking-widest text-zinc-400 active:scale-95 transition-all shadow-md">
-                    [2] 303 PUMPING COMPRESSOR
+                <button id="compBtn" onclick="toggleCompressor()" class="w-full bg-zinc-800 py-3 rounded-lg border border-zinc-700 text-[11px] font-black tracking-widest text-zinc-400 shadow">
+                    303 COMP PUMP
                 </button>
-                <button id="cassetteBtn" onclick="toggleCassette()" class="w-full bg-zinc-800 py-4 rounded-xl border border-zinc-700 text-xs font-black tracking-widest text-zinc-400 active:scale-95 transition-all shadow-md">
-                    [3] CASSETTE TAPE DRIVE
+                <button id="cassetteBtn" onclick="toggleCassette()" class="w-full bg-zinc-800 py-3 rounded-lg border border-zinc-700 text-[11px] font-black tracking-widest text-zinc-400 shadow">
+                    CASSETTE DRIVE
                 </button>
             </div>
-            
-            <div class="text-center text-[9px] text-zinc-600 font-bold uppercase tracking-widest mt-2">OmniGroove Studio Hardware Core</div>
         </div>
 
     </div>
 
-    <!-- AUDIO ENGINE MULTI-PAGE BUS SCRIPTS -->
+    <!-- AUDIO ENGINE IMPLEMENTATION FRAME -->
     <script>
         let audioCtx = null, masterAudioBuffer = null, padBuffers = new Array(16).fill(null);
         let mainVolume = null, compressorNode = null, crackleNode = null, cassetteFilter = null;
         let isCompActive = false, isVinylSimActive = false, isCassetteActive = false;
 
-        // Turntable Canvas Variables
+        // Turntable scratch engine track coordinates
         let canvas = document.getElementById('waveformCanvas'), ctx = canvas.getContext('2d');
         let isScratching = false, scratchLastX = 0, currentPlaybackTime = 0, scratchSource = null;
 
@@ -158,21 +143,38 @@
                 audioCtx = new (window.AudioContext || window.webkitAudioContext)();
                 mainVolume = audioCtx.createGain(); mainVolume.gain.value = 1.0;
                 
-                // 303 Vinyl Ducking Hardware Emulation
                 compressorNode = audioCtx.createDynamicsCompressor();
                 compressorNode.threshold.setValueAtTime(-38, audioCtx.currentTime);
                 compressorNode.ratio.setValueAtTime(14, audioCtx.currentTime);
                 compressorNode.attack.setValueAtTime(0.002, audioCtx.currentTime);
                 compressorNode.release.setValueAtTime(0.09, audioCtx.currentTime);
 
-                // Cassette Filter Warmth
                 cassetteFilter = audioCtx.createBiquadFilter();
                 cassetteFilter.type = 'lowpass'; cassetteFilter.frequency.value = 6500;
-
                 mainVolume.connect(audioCtx.destination);
             }
         }
 
         function handleAudioUpload(event) {
             initAudio();
-            let file = event.target.files[0]; if (!file) return;
+            let file = event.target.files; if (!file) return;
+            
+            document.getElementById('emptyPlaylistMsg').remove();
+            let playlist = document.getElementById('playlistWindow');
+            playlist.className = "flex-1 overflow-y-auto my-1 py-1 px-1 bg-black/60 rounded border border-zinc-950 flex flex-col gap-1 justify-start items-stretch w-full text-left";
+            
+            let item = document.createElement('div');
+            item.className = "bg-zinc-900 border border-zinc-800 rounded p-1.5 text-[10px] text-orange-400 font-mono flex justify-between";
+            item.innerHTML = `<span>📼 ${file.name.substring(0,25)}</span><span class="text-zinc-600 font-bold text-[8px]">LOADED</span>`;
+            playlist.appendChild(item);
+
+            let reader = new FileReader();
+            reader.onload = function(e) {
+                audioCtx.decodeAudioData(e.target.result, function(buffer) {
+                    masterAudioBuffer = buffer;
+                    drawWaveform(buffer);
+                });
+            }; reader.readAsArrayBuffer(file);
+        }
+
+        
