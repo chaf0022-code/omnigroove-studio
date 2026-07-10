@@ -29,25 +29,25 @@
             background: linear-gradient(135deg, #d4c5a0 0%, #c9bfa0 50%, #bfb595 100%);
             box-sizing: border-box;
             overflow: hidden;
-            padding: 6px;
-            gap: 4px;
+            padding: 4px;
+            gap: 3px;
         }
 
-        /* HEADER */
+        /* HEADER - MINIMAL */
         .header {
             display: flex;
-            gap: 4px;
+            gap: 3px;
             flex-shrink: 0;
-            height: 32px;
+            height: 28px;
         }
 
         .btn-header {
             flex: 1;
-            padding: 6px;
-            font-size: 10px;
+            padding: 4px;
+            font-size: 9px;
             font-weight: bold;
             border: 2px solid #1a1a1a;
-            border-radius: 4px;
+            border-radius: 3px;
             cursor: pointer;
             box-shadow: 0 2px 4px rgba(0,0,0,0.3);
             transition: all 0.05s;
@@ -59,30 +59,18 @@
             box-shadow: 0 0 2px rgba(0,0,0,0.3);
         }
 
-        .btn-orange {
-            background: linear-gradient(135deg, #ff8833 0%, #ff6600 100%);
-        }
+        .btn-orange { background: linear-gradient(135deg, #ff8833 0%, #ff6600 100%); }
+        .btn-yellow { background: linear-gradient(135deg, #ffdd44 0%, #ffcc00 100%); }
+        .btn-green { background: linear-gradient(135deg, #44dd44 0%, #22aa22 100%); }
+        .btn-red { background: linear-gradient(135deg, #ff5544 0%, #dd3322 100%); color: #fff; }
 
-        .btn-yellow {
-            background: linear-gradient(135deg, #ffdd44 0%, #ffcc00 100%);
-        }
-
-        .btn-green {
-            background: linear-gradient(135deg, #44dd44 0%, #22aa22 100%);
-        }
-
-        .btn-red {
-            background: linear-gradient(135deg, #ff5544 0%, #dd3322 100%);
-            color: #fff;
-        }
-
-        /* LCD SCREEN */
+        /* LCD - COMPACT */
         .lcd-section {
             flex-shrink: 0;
-            height: 100px;
+            height: 60px;
             background: linear-gradient(180deg, #000 0%, #1a1a1a 100%);
-            border: 4px solid #333;
-            border-radius: 4px;
+            border: 3px solid #333;
+            border-radius: 3px;
             display: flex;
             flex-direction: column;
             overflow: hidden;
@@ -92,8 +80,8 @@
         .lcd-header {
             background: linear-gradient(90deg, #ff6600, #ff8800);
             color: #000;
-            padding: 3px 6px;
-            font-size: 10px;
+            padding: 2px 4px;
+            font-size: 8px;
             font-weight: bold;
             text-align: center;
             flex-shrink: 0;
@@ -103,14 +91,14 @@
         .lcd-content {
             flex: 1;
             display: flex;
-            gap: 4px;
-            padding: 4px;
+            gap: 3px;
+            padding: 2px;
         }
 
         .waveform-display {
             flex: 1;
             background: linear-gradient(180deg, #0a3a52 0%, #051f2e 100%);
-            border: 2px solid #000;
+            border: 1px solid #000;
             border-radius: 2px;
             position: relative;
             cursor: crosshair;
@@ -125,39 +113,32 @@
         .lcd-info {
             display: flex;
             flex-direction: column;
-            gap: 2px;
+            gap: 1px;
             color: #00ff00;
-            font-size: 7px;
+            font-size: 6px;
             font-family: 'Courier New', monospace;
             text-align: right;
-            min-width: 50px;
+            min-width: 40px;
         }
 
         .info-item {
             background: rgba(0,0,0,0.5);
-            padding: 2px 4px;
+            padding: 1px 2px;
             border: 1px solid #0f0;
             border-radius: 1px;
         }
 
-        /* CONTROLS */
-        .controls-section {
+        /* SMALL CONTROLS */
+        .quick-controls {
             display: flex;
-            gap: 4px;
-            flex-wrap: wrap;
+            gap: 2px;
             flex-shrink: 0;
-        }
-
-        .control-group {
-            display: flex;
-            gap: 3px;
-            flex: 1;
-            min-width: 100px;
+            height: 24px;
         }
 
         .small-btn {
-            padding: 4px 6px;
-            font-size: 8px;
+            padding: 3px 4px;
+            font-size: 7px;
             font-weight: bold;
             border: 1px solid #1a1a1a;
             border-radius: 2px;
@@ -169,123 +150,44 @@
         }
 
         .small-btn:active {
-            transform: scale(0.92);
+            transform: scale(0.9);
         }
 
-        /* KNOBS SECTION */
-        .knobs-section {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            flex-shrink: 0;
-            height: 60px;
-            background: rgba(0,0,0,0.1);
-            border-radius: 3px;
-            padding: 4px;
-        }
-
-        .knob {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, #666, #222);
-            border: 2px solid #111;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.5), inset 0 1px 2px rgba(255,255,255,0.1);
-            position: relative;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 7px;
-            color: #fff;
-            font-weight: bold;
-        }
-
-        .knob::before {
-            content: '';
-            position: absolute;
-            width: 2px;
-            height: 15px;
-            background: linear-gradient(135deg, #ff8800 0%, #ff6600 100%);
-            border-radius: 1px;
-            top: 5px;
-            transform: rotate(0deg);
-        }
-
-        /* SEQUENCER GRID */
-        .sequencer-section {
-            display: flex;
-            gap: 2px;
-            flex-wrap: wrap;
-            flex-shrink: 0;
-            padding: 4px;
-            background: rgba(0,0,0,0.05);
-            border-radius: 3px;
-            max-height: 40px;
-            overflow: hidden;
-        }
-
-        .seq-step {
-            width: 18px;
-            height: 18px;
-            background: #333;
-            border: 1px solid #555;
-            border-radius: 2px;
-            cursor: pointer;
-            font-size: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #777;
-            transition: all 0.05s;
-        }
-
-        .seq-step:active, .seq-step.active {
-            background: #ff8800;
-            color: #000;
-            border-color: #ff6600;
-            box-shadow: 0 0 6px #ff8800;
-        }
-
-        .seq-step.playing {
-            background: #00ff00;
-            color: #000;
-            border-color: #00cc00;
-        }
-
-        /* PAD GRID - MAIN FOCUS */
+        /* PAD GRID - MAIN FOCUS - TAKES UP REST OF SPACE */
         .pads-section {
             flex: 1;
             display: flex;
             overflow: hidden;
-            padding: 4px;
-            gap: 4px;
+            padding: 3px;
+            gap: 3px;
+            min-height: 200px;
         }
 
         .pad-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             grid-template-rows: repeat(4, 1fr);
-            gap: 4px;
+            gap: 3px;
             flex: 1;
             overflow: hidden;
-            aspect-ratio: 1/1;
+            width: 100%;
+            height: 100%;
         }
 
         .pad {
             background: linear-gradient(135deg, #555 0%, #333 100%);
-            border: 3px solid #1a1a1a;
-            border-radius: 4px;
+            border: 2px solid #1a1a1a;
+            border-radius: 3px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 12px;
+            font-size: 14px;
             font-weight: bold;
             color: #aaa;
             transition: all 0.05s;
             touch-action: none;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.7), inset 0 1px 2px rgba(255,255,255,0.1);
+            box-shadow: 0 3px 6px rgba(0,0,0,0.7), inset 0 1px 2px rgba(255,255,255,0.1);
             position: relative;
             overflow: hidden;
         }
@@ -304,8 +206,8 @@
         .pad:active, .pad.active {
             background: linear-gradient(135deg, #ff8833 0%, #ff6600 100%);
             color: #fff;
-            box-shadow: 0 0 16px #ff8800, inset 0 1px 2px rgba(255,255,255,0.3);
-            transform: scale(0.93);
+            box-shadow: 0 0 12px #ff8800, inset 0 1px 2px rgba(255,255,255,0.3);
+            transform: scale(0.88);
         }
 
         .pad.loaded {
@@ -317,86 +219,7 @@
         .pad.loaded:active {
             background: linear-gradient(135deg, #ff8833 0%, #ff6600 100%);
             color: #fff;
-            box-shadow: 0 0 16px #ff8800;
-        }
-
-        /* COLLAPSIBLE */
-        .collapsible {
-            flex-shrink: 0;
-            background: rgba(0,0,0,0.1);
-            border-radius: 3px;
-            overflow: hidden;
-            max-height: 80px;
-            transition: max-height 0.3s ease;
-            border: 1px solid #999;
-        }
-
-        .collapsible.collapsed {
-            max-height: 24px;
-        }
-
-        .collapsible-header {
-            background: linear-gradient(90deg, #ff6600 0%, #ffaa33 100%);
-            color: #000;
-            padding: 4px 6px;
-            font-size: 9px;
-            font-weight: bold;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .collapsible-content {
-            padding: 4px;
-            overflow-y: auto;
-            max-height: 70px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 4px;
-        }
-
-        .slider-item {
-            flex: 1;
-            min-width: 80px;
-            display: flex;
-            align-items: center;
-            gap: 3px;
-            font-size: 8px;
-        }
-
-        .slider-label {
-            color: #000;
-            font-weight: bold;
-            min-width: 35px;
-        }
-
-        input[type="range"] {
-            flex: 1;
-            height: 3px;
-            border-radius: 2px;
-            background: #444;
-            outline: none;
-            -webkit-appearance: none;
-            appearance: none;
-        }
-
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #ff8800 0%, #ff6600 100%);
-            cursor: pointer;
-        }
-
-        input[type="range"]::-moz-range-thumb {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #ff8800 0%, #ff6600 100%);
-            cursor: pointer;
-            border: none;
+            box-shadow: 0 0 12px #ff8800;
         }
 
         input[type="file"] {
@@ -406,11 +229,11 @@
 </head>
 <body>
     <div class="container">
-        <!-- HEADER BUTTONS -->
+        <!-- HEADER -->
         <div class="header">
             <button class="btn-header btn-yellow" onclick="loadSample()">LOAD</button>
-            <button class="btn-header btn-green" onclick="recordSample()">REC</button>
-            <button class="btn-header btn-orange" onclick="autoChop16()">AUTO CHOP</button>
+            <button class="btn-header btn-orange" onclick="autoChop16()">AUTO</button>
+            <button class="btn-header btn-green" onclick="playSeq()">▶</button>
             <button class="btn-header btn-red" onclick="exportBeat()">EXPORT</button>
         </div>
 
@@ -422,65 +245,22 @@
                     <canvas id="waveCanvas" class="waveform-canvas"></canvas>
                 </div>
                 <div class="lcd-info">
-                    <div class="info-item" id="sampleName">EMPTY</div>
-                    <div class="info-item" id="sampleDur">0.0s</div>
-                    <div class="info-item" id="sliceCount">0 SL</div>
+                    <div class="info-item" id="sampleName">-</div>
+                    <div class="info-item" id="sampleDur">0s</div>
+                    <div class="info-item" id="sliceCount">0</div>
                 </div>
             </div>
         </div>
 
-        <!-- SEQUENCER -->
-        <div class="sequencer-section" id="seqGrid"></div>
-
-        <!-- KNOBS -->
-        <div class="knobs-section">
-            <div>
-                <div class="knob" id="knob1" title="LEVEL"></div>
-                <span style="font-size: 7px; text-align: center; display: block;">LEVEL</span>
-            </div>
-            <div>
-                <div class="knob" id="knob2" title="PAN"></div>
-                <span style="font-size: 7px; text-align: center; display: block;">PAN</span>
-            </div>
-            <div>
-                <div class="knob" id="knob3" title="FILTER"></div>
-                <span style="font-size: 7px; text-align: center; display: block;">FILTER</span>
-            </div>
+        <!-- QUICK CONTROLS -->
+        <div class="quick-controls">
+            <button class="small-btn" onclick="chopStart()">◄ START</button>
+            <button class="small-btn" onclick="chopEnd()">END ►</button>
+            <button class="small-btn" onclick="setPad()">SET</button>
+            <button class="small-btn" onclick="stopSeq()">⏹</button>
         </div>
 
-        <!-- CHOP CONTROLS -->
-        <div class="controls-section">
-            <div class="control-group">
-                <button class="small-btn" onclick="chopStart()">◄ START</button>
-                <button class="small-btn" onclick="chopEnd()">END ►</button>
-                <button class="small-btn" onclick="setPad()">✓ SET PAD</button>
-            </div>
-            <div class="control-group">
-                <button class="small-btn" onclick="playSeq()">▶ PLAY</button>
-                <button class="small-btn" onclick="stopSeq()">⏹ STOP</button>
-                <button class="small-btn" onclick="clearSeq()">CLR SEQ</button>
-            </div>
-        </div>
-
-        <!-- EFFECTS PANEL -->
-        <div class="collapsible" id="fxPanel">
-            <div class="collapsible-header" onclick="toggleFX()">
-                FX/PITCH <span id="fxArrow">▼</span>
-            </div>
-            <div class="collapsible-content">
-                <div class="slider-item">
-                    <span class="slider-label">PITCH</span>
-                    <input type="range" id="pitchSlider" min="-12" max="12" value="0">
-                </div>
-                <div class="slider-item">
-                    <span class="slider-label">TEMPO</span>
-                    <input type="range" id="tempoSlider" min="60" max="180" value="120" oninput="setTempo(this.value)">
-                    <span id="tempoVal" style="min-width: 25px;">120</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- 4x4 PAD GRID -->
+        <!-- 4x4 PAD GRID - MAIN -->
         <div class="pads-section">
             <div class="pad-grid" id="padGrid"></div>
         </div>
@@ -491,15 +271,11 @@
     <script>
         let audioContext = null;
         let audioBuffer = null;
-        let mediaRecorder = null;
-        let recordedChunks = [];
-        let isRecording = false;
 
         let pads = Array(16).fill(null).map(() => ({
             buffer: null,
             start: 0,
-            end: 0,
-            name: 'EMPTY'
+            end: 0
         }));
 
         let currentPad = 0;
@@ -507,7 +283,6 @@
         let chopEnd = 0;
         let tempo = 120;
         let isPlaying = false;
-        let seqStep = 0;
 
         function ensureAudioContext() {
             if (!audioContext) {
@@ -536,45 +311,17 @@
                     audioBuffer = decoded;
                     chopStart = 0;
                     chopEnd = decoded.length;
-                    updateLCDInfo(file.name.substring(0, 12), decoded.duration.toFixed(1));
+                    document.getElementById('sampleName').textContent = file.name.substring(0, 8);
+                    document.getElementById('sampleDur').textContent = decoded.duration.toFixed(1) + 's';
                     drawWaveform();
-                }, err => alert('Error loading audio'));
+                    console.log('Loaded:', file.name);
+                }, err => {
+                    console.error('Decode error:', err);
+                    alert('Audio error');
+                });
             };
             reader.readAsArrayBuffer(file);
         });
-
-        // RECORD SAMPLE
-        function recordSample() {
-            ensureAudioContext();
-            if (isRecording) {
-                mediaRecorder.stop();
-                isRecording = false;
-                return;
-            }
-
-            navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
-                mediaRecorder = new MediaRecorder(stream);
-                recordedChunks = [];
-                mediaRecorder.ondataavailable = e => recordedChunks.push(e.data);
-                mediaRecorder.onstop = () => {
-                    const blob = new Blob(recordedChunks, { type: 'audio/wav' });
-                    const reader = new FileReader();
-                    reader.onload = function(evt) {
-                        audioContext.decodeAudioData(evt.target.result, function(decoded) {
-                            audioBuffer = decoded;
-                            chopStart = 0;
-                            chopEnd = decoded.length;
-                            updateLCDInfo('REC', decoded.duration.toFixed(1));
-                            drawWaveform();
-                            stream.getTracks().forEach(t => t.stop());
-                        });
-                    };
-                    reader.readAsArrayBuffer(blob);
-                };
-                mediaRecorder.start();
-                isRecording = true;
-            }).catch(err => alert('Microphone access denied'));
-        }
 
         // DRAW WAVEFORM
         function drawWaveform() {
@@ -612,7 +359,7 @@
             }
             ctx.stroke();
 
-            // Draw slice area
+            // Draw slice
             if (chopEnd > chopStart && audioBuffer) {
                 const x1 = (chopStart / audioBuffer.length) * w;
                 const x2 = (chopEnd / audioBuffer.length) * w;
@@ -620,7 +367,7 @@
                 ctx.fillRect(x1, 0, x2 - x1, h);
 
                 ctx.strokeStyle = '#ff8800';
-                ctx.lineWidth = 2;
+                ctx.lineWidth = 1;
                 ctx.beginPath();
                 ctx.moveTo(x1, 0);
                 ctx.lineTo(x1, h);
@@ -632,7 +379,7 @@
             }
         }
 
-        // WAVEFORM CLICK TO CHOP
+        // WAVEFORM CLICK
         document.getElementById('waveContainer').addEventListener('click', function(e) {
             if (!audioBuffer) return;
             const rect = this.getBoundingClientRect();
@@ -661,7 +408,7 @@
             drawWaveform();
         }
 
-        // AUTO CHOP
+        // AUTO CHOP 16
         function autoChop16() {
             if (!audioBuffer) {
                 alert('Load sample first');
@@ -673,14 +420,13 @@
                 pads[i].buffer = audioBuffer;
                 pads[i].start = Math.floor(i * sliceLen);
                 pads[i].end = Math.floor((i + 1) * sliceLen);
-                pads[i].name = `S${i + 1}`;
             }
 
-            document.querySelectorAll('.pad').forEach((el, i) => {
+            document.querySelectorAll('.pad').forEach((el) => {
                 el.classList.add('loaded');
             });
 
-            document.getElementById('sliceCount').textContent = '16 SL';
+            document.getElementById('sliceCount').textContent = '16';
         }
 
         // SET PAD
@@ -693,17 +439,12 @@
             pads[currentPad].buffer = audioBuffer;
             pads[currentPad].start = chopStart;
             pads[currentPad].end = chopEnd;
-            pads[currentPad].name = `P${currentPad + 1}`;
 
             const padEl = document.querySelectorAll('.pad')[currentPad];
             padEl.classList.add('loaded');
-            padEl.textContent = currentPad + 1;
 
-            document.getElementById('sliceCount').textContent = countLoadedPads() + ' SL';
-        }
-
-        function countLoadedPads() {
-            return pads.filter(p => p.buffer).length;
+            const count = pads.filter(p => p.buffer).length;
+            document.getElementById('sliceCount').textContent = count;
         }
 
         // PLAY PAD
@@ -714,12 +455,10 @@
 
             const start = pad.start / pad.buffer.sampleRate;
             const dur = (pad.end - pad.start) / pad.buffer.sampleRate;
-            const pitch = parseInt(document.getElementById('pitchSlider').value);
 
             try {
                 const src = audioContext.createBufferSource();
                 src.buffer = pad.buffer;
-                src.playbackRate.value = Math.pow(2, pitch / 12);
                 src.connect(audioContext.destination);
                 src.start(0, start, dur);
             } catch (err) {
@@ -728,59 +467,27 @@
 
             const padEl = document.querySelectorAll('.pad')[idx];
             padEl.classList.add('active');
-            setTimeout(() => padEl.classList.remove('active'), 80);
+            setTimeout(() => padEl.classList.remove('active'), 100);
         }
 
-        // SEQUENCER
+        // PLAY SEQUENCE
         function playSeq() {
             ensureAudioContext();
             if (isPlaying) return;
             isPlaying = true;
-            seqStep = 0;
-            runSeq();
-        }
-
-        function runSeq() {
-            if (!isPlaying) return;
-
-            const steps = document.querySelectorAll('.seq-step');
-            steps.forEach(s => s.classList.remove('playing'));
             
-            if (steps[seqStep].classList.contains('active')) {
-                playPad(seqStep % 16);
+            let step = 0;
+            function run() {
+                if (!isPlaying) return;
+                playPad(step % 16);
+                step = (step + 1) % 16;
+                setTimeout(run, 250);
             }
-            steps[seqStep].classList.add('playing');
-
-            seqStep = (seqStep + 1) % 16;
-            const stepMs = (60000 / tempo) / 4;
-            setTimeout(runSeq, stepMs);
+            run();
         }
 
         function stopSeq() {
             isPlaying = false;
-        }
-
-        function clearSeq() {
-            document.querySelectorAll('.seq-step').forEach(s => s.classList.remove('active'));
-        }
-
-        function setTempo(val) {
-            tempo = parseInt(val);
-            document.getElementById('tempoVal').textContent = val;
-        }
-
-        // UPDATE LCD
-        function updateLCDInfo(name, dur) {
-            document.getElementById('sampleName').textContent = name.substring(0, 10);
-            document.getElementById('sampleDur').textContent = dur + 's';
-        }
-
-        // TOGGLE FX
-        function toggleFX() {
-            const panel = document.getElementById('fxPanel');
-            const arrow = document.getElementById('fxArrow');
-            panel.classList.toggle('collapsed');
-            arrow.textContent = panel.classList.contains('collapsed') ? '▶' : '▼';
         }
 
         // EXPORT
@@ -842,7 +549,6 @@
                     off += 2;
                 }
             }
-
             return view.buffer;
         }
 
@@ -850,7 +556,7 @@
         window.addEventListener('load', function() {
             ensureAudioContext();
 
-            // Create pad grid (4x4)
+            // Create pad grid
             const grid = document.getElementById('padGrid');
             const mpcNumbers = [13, 14, 15, 16, 9, 10, 11, 12, 5, 6, 7, 8, 1, 2, 3, 4];
             
@@ -863,16 +569,6 @@
                 grid.appendChild(pad);
             }
 
-            // Create sequencer steps
-            const seqGrid = document.getElementById('seqGrid');
-            for (let i = 0; i < 16; i++) {
-                const step = document.createElement('div');
-                step.className = 'seq-step';
-                step.textContent = i + 1;
-                step.addEventListener('click', () => step.classList.toggle('active'));
-                seqGrid.appendChild(step);
-            }
-
             // Resume audio on touch
             document.addEventListener('touchstart', () => {
                 if (audioContext.state === 'suspended') {
@@ -881,6 +577,7 @@
             }, { passive: false });
 
             drawWaveform();
+            console.log('MPC Sample Ready');
         });
     </script>
 </body>
